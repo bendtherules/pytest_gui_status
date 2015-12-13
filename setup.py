@@ -1,18 +1,19 @@
 from setuptools import setup
 
 packages = [
-    'plugin',
-    'gui',
+    "pytest_gui_status",
+    # 'pytest_gui_status.plugin',
+    # 'pytest_gui_status.gui',
 ]
-# packages=packages,
 package_dir = {
-    'plugin': 'status_plugin',
-    'gui': 'status_gui',
-},
+    'pytest_gui_status': 'pytest_gui_status',
+    # 'pytest_gui_status.plugin': 'status_plugin',
+    # 'pytest_gui_status.gui': 'status_gui',
+}
 
 setup(
     name='pytest_gui_status',
-    version='0.0.1',
+    version='0.0.2',
     description='Show pytest status in gui',
     author='Abhas Bhattacharya',
     author_email='abhasbhattacharya2@gmail.com',
