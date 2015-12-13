@@ -1,11 +1,14 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
-# packages = [
-#     'pontoon',
-#     'pontoon.cmd'
-# ]
+packages = [
+    'plugin',
+    'gui',
+]
 # packages=packages,
-# package_dir={'pontoon': 'pontoon'},
+package_dir = {
+    'plugin': 'status_plugin',
+    'gui': 'status_gui',
+},
 
 setup(
     name='pytest_gui_status',
@@ -14,8 +17,8 @@ setup(
     author='Abhas Bhattacharya',
     author_email='abhasbhattacharya2@gmail.com',
     # url='http://github.com/joeyespo/pytest-watch',
-    packages=["pytest_gui_status"],
-    package_dir={'pytest_gui_status': 'pytest_gui_status'},
+    packages=packages,
+    package_dir=package_dir,
     license='MIT',
     platforms='any',
     install_requires=open('requirements.txt').readlines(),
