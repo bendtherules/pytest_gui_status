@@ -3,8 +3,13 @@ import subprocess
 import time
 import sys
 import redis
+import os
 
-REDIS_PORT = 5946
+env_redis_port = os.environ.get("pytest_status_port")
+if env_redis_port:
+    REDIS_PORT = int(env_redis_port)
+else:
+    REDIS_PORT = 5946
 
 command_redis_server_gen = "redis-server --port {port} --maxheap 20MB"
 command_redis_server = command_redis_server_gen.format(port=REDIS_PORT)
