@@ -4,6 +4,7 @@ Todo
 1. move rendering update to js using diff-dom + nunjucks ( to be decided )
 2. (-done manually, add tests)check intermediate test steps like collect, testrun
 3. In plugin, set attributes in chunk using pipeline, using `with`
+4. Add gui tests
 
 Done
 ------
