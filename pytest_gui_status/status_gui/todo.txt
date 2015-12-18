@@ -1,0 +1,13 @@
+Todo
+------
+
+1. move rendering update to js using diff-dom + nunjucks ( to be decided )
+2. (-done manually, add tests)check intermediate test steps like collect, testrun
+3. In plugin, set attributes in chunk using pipeline, using `with`
+
+Done
+------
+
+1. (---) Get dirname from cmdline
+2. (---) responsive width of test
+3. (---) Time should update automatically
