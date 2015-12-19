@@ -13,7 +13,7 @@ package_dir = {
 
 setup(
     name='pytest_gui_status',
-    version='0.0.2',
+    version='0.0.3',
     description='Show pytest status in gui',
     author='Abhas Bhattacharya',
     author_email='abhasbhattacharya2@gmail.com',
@@ -26,6 +26,9 @@ setup(
     entry_points={
         # 'pytest11': [
             # 'pytest_gui_status = pytest_gui_status.main',
-        # ]
+        # ],
+        'console_scripts': [
+            'pytest_gui_status = pytest_gui_status.status_gui.gui_frontend:main',
+        ]
     },
 )

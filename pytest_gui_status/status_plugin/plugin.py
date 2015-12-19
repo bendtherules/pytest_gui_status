@@ -4,6 +4,7 @@ import time
 import sys
 import redis
 import os
+import psutil
 
 env_redis_port = os.environ.get("pytest_status_port")
 if env_redis_port:
@@ -13,6 +14,8 @@ else:
 
 command_redis_server_gen = "redis-server --port {port} --maxheap 20MB"
 command_redis_server = command_redis_server_gen.format(port=REDIS_PORT)
+
+command_status_gui = "pytest_gui_status"
 
 # Redis will look like:
 # PYTEST_STATUS_DB = 1
@@ -25,6 +28,7 @@ command_redis_server = command_redis_server_gen.format(port=REDIS_PORT)
 # {hash_a}_pass = [test_a_name,...]
 # {hash_a}_fail = [test_b_name,...]
 # {hash_a}_skip = [test_c_name,...]
+# {hash_a}_gui_pid = pid # check this before launching gui
 
 
 class Helpers(object):
@@ -71,10 +75,21 @@ class Helpers(object):
         Helpers.modify_last_updated(dir_name)
 
     @staticmethod
+    def start_gui(dir_name):
+        # craete redis connection
+        redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
+        hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+
+        existing_gui_pid = redis_db.get("{hash_a}_gui_pid".format(hash_a=hash_dir_name))
+        if (not existing_gui_pid) or (not psutil.pid_exists(existing_gui_pid)):
+            gui_popen_obj = subprocess.Popen(command_status_gui)
+            gui_pid = gui_popen_obj.pid
+            redis_db.set("{hash_a}_gui_pid".format(hash_a=hash_dir_name), gui_pid)
+
+    @staticmethod
     def on_collectstart(dir_name):
         # craete redis connection
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
-
         hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
 
         redis_db.set("{hash_a}_state".format(hash_a=hash_dir_name), "collect")
@@ -86,7 +101,6 @@ class Helpers(object):
     def on_collectend(dir_name, list_test_name):
         # craete redis connection
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
-
         hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
 
         redis_db.rpush("{hash_a}_collect".format(hash_a=hash_dir_name), *list_test_name)
@@ -98,7 +112,6 @@ class Helpers(object):
     def on_test_eachstart(dir_name):
         # craete redis connection
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
-
         hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
 
         redis_db.set("{hash_a}_state".format(hash_a=hash_dir_name), "runtest")
@@ -110,7 +123,6 @@ class Helpers(object):
     def on_test_eachend(dir_name, list_test_result):
         # craete redis connection
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
-
         hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
 
         list_testname_pass = [test_result.nodeid for test_result in
@@ -136,7 +148,6 @@ class Helpers(object):
     def on_end(dir_name):
         # craete redis connection
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
-
         hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
 
         redis_db.set("{hash_a}_state".format(hash_a=hash_dir_name), "end")
