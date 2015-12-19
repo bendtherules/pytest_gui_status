@@ -5,6 +5,7 @@ Todo
 2. (-done manually, add tests)check intermediate test steps like collect, testrun
 3. In plugin, set attributes in chunk using pipeline, using `with`
 4. Add gui tests
+5. Launch only 1 instance of gui from plugin with pid check from redis_db
 
 Done
 ------
