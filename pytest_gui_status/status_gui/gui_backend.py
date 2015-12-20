@@ -34,16 +34,24 @@ class Controller(htmlPy.Object):
 
     @htmlPy.Slot()
     def redraw(self):
-        # from main import app as app_gui
-        print(self.app_gui.dir_name)
-
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
-        # make sure that this is correct redis db
         try:
+            assert redis_db.ping()
+        except redis.exceptions.ConnectionError:
+            raise redis.exceptions.ConnectionError("Cant connect to this socket. Is redis running?\n"
+                                                   "Couldnt start pytest_status_gui")
+        except AssertionError:
+            raise redis.exceptions.ConnectionError("Cant connect to redis, something else seems to be running on this socket. "
+                                                   "Is redis running?\n"
+                                                   "Couldnt start pytest_status_gui")
+
+        try:
+            # make sure that this is correct redis db
             assert redis_db.get("PYTEST_STATUS_DB") == "1"
-        except AssertionError, e:
-            print("Got redis db, but it is not related to pytest status")
-            raise e
+        except AssertionError:
+            raise redis.exceptions.ConnectionError("Redis is running on this port, but it is not related to pytest status\n"
+                                                   "Couldnt start pytest_status_gui")
+
         dir_name = self.app_gui.dir_name
         hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
 
@@ -72,7 +80,6 @@ class Controller(htmlPy.Object):
         dict_state["skip"] = redis_db.lrange("{hash_a}_skip".format(hash_a=hash_dir_name), 0, -1)
 
         if (not self.last_state) or (self.last_state != dict_state):
-            print("called redraw")
             self.app_gui.html = render_template(self.app_gui, "index.html", dict_state)
 
         self.last_state = dict_state
