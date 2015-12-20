@@ -15,7 +15,7 @@ else:
 command_redis_server_gen = "redis-server --port {port} --maxheap 20MB"
 command_redis_server = command_redis_server_gen.format(port=REDIS_PORT)
 
-command_status_gui = "pytest_gui_status"
+command_status_gui_gen = "pytest_gui_status \"{norm_dir_name}\""
 
 # Redis will look like:
 # PYTEST_STATUS_DB = 1
@@ -41,7 +41,7 @@ class Helpers(object):
         dir_name - Name of directory from which pytest started
         '''
         command_redis_server_args = shlex.split(command_redis_server)
-        print(command_redis_server_args)
+        # print(command_redis_server_args)
 
         print("Starting up redis")
         redis_popen_obj = subprocess.Popen(command_redis_server_args)
@@ -79,9 +79,16 @@ class Helpers(object):
         # craete redis connection
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
         hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+        assert hash_dir_name is not None
 
         existing_gui_pid = redis_db.get("{hash_a}_gui_pid".format(hash_a=hash_dir_name))
-        if (not existing_gui_pid) or (not psutil.pid_exists(existing_gui_pid)):
+        # can be string or None. If string, make it int
+        if existing_gui_pid:
+            existing_gui_pid = int(existing_gui_pid)
+
+        if not (existing_gui_pid and psutil.pid_exists(existing_gui_pid)):
+            norm_dir_name = os.path.normpath(dir_name)
+            command_status_gui = command_status_gui_gen.format(norm_dir_name=norm_dir_name)
             gui_popen_obj = subprocess.Popen(command_status_gui)
             gui_pid = gui_popen_obj.pid
             redis_db.set("{hash_a}_gui_pid".format(hash_a=hash_dir_name), gui_pid)
@@ -183,8 +190,9 @@ class PYTEST_DATA(object):
 
 
 def pytest_sessionstart(session):
-    PYTEST_DATA.data["dir_name_start"] = session.startdir
+    PYTEST_DATA.data["dir_name_start"] = str(session.startdir)
     Helpers.on_start(PYTEST_DATA.data["dir_name_start"])
+    Helpers.start_gui(PYTEST_DATA.data["dir_name_start"])
 
 
 def pytest_collectstart(collector):
