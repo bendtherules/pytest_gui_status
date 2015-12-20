@@ -5,7 +5,10 @@ Todo
 2. (-done manually, add tests)check intermediate test steps like collect, testrun
 3. In plugin, set attributes in chunk using pipeline, using `with`
 4. Add gui tests
-5. Launch only 1 instance of gui from plugin with pid check from redis_db
+5. use logging.debug for more prints
+6. Think about popen stdouts
+7. Print redis not connected in gui itself instead of console
+8. Allow config for tmpl, redis_arg, status_gui_arg, 
 
 Done
 ------
@@ -13,3 +16,4 @@ Done
 1. (---) Get dirname from cmdline
 2. (---) responsive width of test
 3. (---) Time should update automatically
+4. (---) Launch only 1 instance of gui from plugin with pid check from redis_db
