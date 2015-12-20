@@ -64,7 +64,7 @@ def test_whole_1(tmpdir):
     assert (redis_db.llen("{hash_a}_pass".format(hash_a=hash_dir_name)) == 1)
     assert (redis_db.llen("{hash_a}_fail".format(hash_a=hash_dir_name)) == 1)
     assert (redis_db.llen("{hash_a}_skip".format(hash_a=hash_dir_name)) == 0)
-    
+
     collected_tests = redis_db.lrange("{hash_a}_collect".format(hash_a=hash_dir_name), 0, -1)
     assert (collected_tests == ["test_1.py::test_pass", "test_1.py::test_fail"])
 
