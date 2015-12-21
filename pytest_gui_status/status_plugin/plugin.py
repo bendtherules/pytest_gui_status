@@ -5,6 +5,8 @@ import sys
 import redis
 import os
 import psutil
+import datetime
+
 
 env_redis_port = os.environ.get("pytest_status_port")
 if env_redis_port:
@@ -29,6 +31,7 @@ command_status_gui_gen = "pytest_gui_status \"{norm_dir_name}\""
 # {hash_a}_fail = [test_b_name,...]
 # {hash_a}_skip = [test_c_name,...]
 # {hash_a}_gui_pid = pid # check this before launching gui
+# make bulk changes with pipeline
 
 
 class Helpers(object):
@@ -36,7 +39,7 @@ class Helpers(object):
     @staticmethod
     def on_start(dir_name):
         '''
-        Init gui_status and redis on start of pytest.
+        Init redis on start of pytest.
 
         dir_name - Name of directory from which pytest started
         '''
@@ -59,14 +62,15 @@ class Helpers(object):
                 print("** Not found existing redis, couldnt connect, check! **")
                 sys.exit()
 
-        # todo : start and check gui with dir name and hash
+        hash_dir_name = hash(dir_name)
 
         # craete redis connection and set sample key
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
-        redis_db.set("PYTEST_STATUS_DB", "1")
+        redis_pipe = redis_db.pipeline()
+        redis_pipe.set("PYTEST_STATUS_DB", "1")
 
-        hash_dir_name = hash(dir_name)
-        redis_db.hset("directories_to_hash", dir_name, hash_dir_name)
+        redis_pipe.hset("directories_to_hash", dir_name, hash_dir_name)
+        redis_pipe.execute()
         Helpers.on_start_reset(dir_name)
 
         redis_db.set("{hash_a}_state".format(hash_a=hash_dir_name), "start")
@@ -76,6 +80,9 @@ class Helpers(object):
 
     @staticmethod
     def start_gui(dir_name):
+        '''
+        Init status_gui at start
+        '''
         # craete redis connection
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
         hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
@@ -98,6 +105,7 @@ class Helpers(object):
         # craete redis connection
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
         hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+        assert hash_dir_name is not None
 
         redis_db.set("{hash_a}_state".format(hash_a=hash_dir_name), "collect")
 
@@ -109,6 +117,7 @@ class Helpers(object):
         # craete redis connection
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
         hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+        assert hash_dir_name is not None
 
         redis_db.rpush("{hash_a}_collect".format(hash_a=hash_dir_name), *list_test_name)
 
@@ -120,6 +129,7 @@ class Helpers(object):
         # craete redis connection
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
         hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+        assert hash_dir_name is not None
 
         redis_db.set("{hash_a}_state".format(hash_a=hash_dir_name), "runtest")
 
@@ -131,6 +141,7 @@ class Helpers(object):
         # craete redis connection
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
         hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+        assert hash_dir_name is not None
 
         list_testname_pass = [test_result.nodeid for test_result in
                               list_test_result if test_result.outcome == "passed"]
@@ -141,12 +152,16 @@ class Helpers(object):
         list_testname_skip = [test_result.nodeid for test_result in
                               list_test_result if test_result.outcome == "skipped"]
 
+        redis_pipe = redis_db.pipeline()
+
         if list_testname_pass:
-            redis_db.lpush("{hash_a}_pass".format(hash_a=hash_dir_name), *list_testname_pass)
+            redis_pipe.lpush("{hash_a}_pass".format(hash_a=hash_dir_name), *list_testname_pass)
         if list_testname_fail:
-            redis_db.lpush("{hash_a}_fail".format(hash_a=hash_dir_name), *list_testname_fail)
+            redis_pipe.lpush("{hash_a}_fail".format(hash_a=hash_dir_name), *list_testname_fail)
         if list_testname_skip:
-            redis_db.lpush("{hash_a}_skip".format(hash_a=hash_dir_name), *list_testname_skip)
+            redis_pipe.lpush("{hash_a}_skip".format(hash_a=hash_dir_name), *list_testname_skip)
+
+        redis_pipe.execute()
 
         # set last updated
         Helpers.modify_last_updated(dir_name)
@@ -156,6 +171,7 @@ class Helpers(object):
         # craete redis connection
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
         hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+        assert hash_dir_name is not None
 
         redis_db.set("{hash_a}_state".format(hash_a=hash_dir_name), "end")
 
@@ -165,7 +181,9 @@ class Helpers(object):
     @staticmethod
     def on_start_reset(dir_name):
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
+
         hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+        assert hash_dir_name is not None
 
         list_gen_varname = ["{hash_a}_state", "{hash_a}_last_updated", "{hash_a}_collect", "{hash_a}_pass", "{hash_a}_fail", "{hash_a}_skip"]
         list_cur_varname = [varname.format(hash_a=hash_dir_name) for varname in list_gen_varname]
@@ -175,12 +193,13 @@ class Helpers(object):
 
     @staticmethod
     def modify_last_updated(dir_name):
-        import datetime
+        # update_last_updated in redis. If pipe provided, queue the command instead.
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
+
         hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+        assert hash_dir_name is not None
 
         cur_iso_datetime = datetime.datetime.now().isoformat()
-
         redis_db.set("{hash_a}_last_updated".format(hash_a=hash_dir_name), cur_iso_datetime)
 
 
@@ -189,10 +208,22 @@ class PYTEST_DATA(object):
     data = {}
 
 
+def pytest_addoption(parser):
+    parser.addoption("--status_gui", dest="show_status_gui", action="store_true")
+
+
+def pytest_configure(config):
+    pass
+
+
 def pytest_sessionstart(session):
+    config = session.config
     PYTEST_DATA.data["dir_name_start"] = str(session.startdir)
+
     Helpers.on_start(PYTEST_DATA.data["dir_name_start"])
-    Helpers.start_gui(PYTEST_DATA.data["dir_name_start"])
+
+    if config.getoption("show_status_gui"):
+        Helpers.start_gui(PYTEST_DATA.data["dir_name_start"])
 
 
 def pytest_collectstart(collector):
@@ -214,12 +245,3 @@ def pytest_runtest_logreport(report):
 
 def pytest_sessionfinish(session, exitstatus):
     Helpers.on_end(PYTEST_DATA.data["dir_name_start"])
-
-# pytest_sessionstart(session)
-# pytest_collectstart(collector) | collector.config
-# pytest_itemcollected
-## pytest_collection_modifyitems(session, config, items)
-# pytest_collectreport
-# pytest_runtest_logstart(nodeid, location) - single test start
-# pytest_runtest_logreport(report) - single test end
-# pytest_sessionfinish(session, exit_status) - session end

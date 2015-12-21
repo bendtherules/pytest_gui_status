@@ -2,7 +2,6 @@ import pytest_gui_status.status_plugin as status_plugin
 import subprocess
 from mock import patch
 import redis
-import pytest
 
 import os
 import tempfile
@@ -53,8 +52,6 @@ def test_whole_1(tmpdir):
 
     popen_pytest = subprocess.Popen(["py.test", "-s"], shell=True)
     popen_pytest.wait()
-
-    # pytest.main(["-s"])
 
     dir_name = os.getcwd()
     assert (dir_name == path_case)
