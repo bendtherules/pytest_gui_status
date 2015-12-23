@@ -1,14 +1,11 @@
 Todo
 ------
+1. (--move tests to correct folder) check intermediate test steps like collect, testrun
+2. Add gui tests
+3. use logging.debug for more prints
+4. Allow config for tmpl, redis_arg, status_gui_arg
+5. Use config.pluginmanager.hasplugin('plugin_name')
 
-1. move rendering update to js using diff-dom + nunjucks ( to be decided )
-2. (-done manually, add tests)check intermediate test steps like collect, testrun
-3. In plugin, set attributes in chunk using pipeline, using `with`
-4. Add gui tests
-5. use logging.debug for more prints
-6. Think about popen stdouts
-7. Print redis not connected in gui itself instead of console
-8. Allow config for tmpl, redis_arg, status_gui_arg
 
 Done
 ------
@@ -20,3 +17,16 @@ Done
 5. (-) use pipelines when possible
 6. (---) Self Tests also pop up gui, add option for plugin
 9. (---) Register as pytest plugin in setup.py
+
+
+Think
+-------
+1. move rendering update to js using diff-dom + nunjucks ( to be decided )
+2. Think about popen stdouts
+
+
+Discarded
+----------
+
+1. Show "redis not connected" in gui itself instead of console
+2. In plugin, set attributes in chunk using pipeline, using `with`
