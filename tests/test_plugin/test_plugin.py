@@ -27,7 +27,7 @@ class patched_chdir(object):
 
 def create_temp_case(case_name, path_tmpdir=None):
     with patched_chdir(os.path.dirname(__file__)):
-        path_test_cases = os.path.abspath("testcases/")
+        path_test_cases = os.path.abspath("../testcases/")
         path_case = os.path.join(path_test_cases, case_name)
 
         path_tmpdir = path_tmpdir or tempfile.mkdtemp()
@@ -89,3 +89,20 @@ def test_whole_2(tmpdir):
     assert (redis_db.llen("{hash_a}_pass".format(hash_a=hash_dir_name)) == 1)
     assert (redis_db.llen("{hash_a}_fail".format(hash_a=hash_dir_name)) == 2)
     assert (redis_db.llen("{hash_a}_skip".format(hash_a=hash_dir_name)) == 1)
+
+
+@patch.dict("os.environ",
+            {"pytest_status_port": str(REDIS_TEST_PORT)})
+def test_intermediate_1(tmpdir):
+    '''
+    Integration test
+    '''
+    os.chdir(os.path.dirname(__file__))
+    tmpdir = str(tmpdir)
+    path_case = create_temp_case("case_3", tmpdir)
+    os.chdir(path_case)
+
+    popen_pytest = subprocess.Popen(["py.test", "-s"], shell=True)
+    pytest_ret_code = popen_pytest.wait()
+
+    assert pytest_ret_code == 0
