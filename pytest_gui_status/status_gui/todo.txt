@@ -2,9 +2,10 @@ Todo
 ------
 
 1. Add gui tests
-2. use logging.debug for more prints
+2. use logging.debug / log file for more prints
 3. Allow config for tmpl, redis_arg, status_gui_arg
-4. Use config.pluginmanager.hasplugin('plugin_name')
+4. Add well-explained readme
+4. Use config.pluginmanager.hasplugin('plugin_name') when needed
 
 
 Done
