@@ -38,19 +38,22 @@ class Controller(htmlPy.Object):
         try:
             assert redis_db.ping()
         except redis.exceptions.ConnectionError:
+            self.app_gui.stop()
             raise redis.exceptions.ConnectionError("Cant connect to this socket. Is redis running?\n"
-                                                   "Couldnt start pytest_status_gui")
+                                                   "Stopping pytest_status_gui")
         except AssertionError:
+            self.app_gui.stop()
             raise redis.exceptions.ConnectionError("Cant connect to redis, something else seems to be running on this socket. "
                                                    "Is redis running?\n"
-                                                   "Couldnt start pytest_status_gui")
+                                                   "Stopping pytest_status_gui")
 
         try:
             # make sure that this is correct redis db
             assert redis_db.get("PYTEST_STATUS_DB") == "1"
         except AssertionError:
+            self.app_gui.stop()
             raise redis.exceptions.ConnectionError("Redis is running on this port, but it is not related to pytest status\n"
-                                                   "Couldnt start pytest_status_gui")
+                                                   "Stopping pytest_status_gui")
 
         dir_name = self.app_gui.dir_name
         hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
