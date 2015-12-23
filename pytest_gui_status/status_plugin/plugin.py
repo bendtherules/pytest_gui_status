@@ -14,7 +14,10 @@ if env_redis_port:
 else:
     REDIS_PORT = 5946
 
-command_redis_server_gen = "redis-server --port {port} --maxheap 20MB"
+if os.environ["TRAVIS"] == "true":
+    command_redis_server_gen = "redis-server --port {port}"
+else:
+    command_redis_server_gen = "redis-server --port {port} --maxheap 20MB"
 command_redis_server = command_redis_server_gen.format(port=REDIS_PORT)
 
 command_status_gui_gen = "pytest_gui_status \"{norm_dir_name}\""

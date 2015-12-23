@@ -1,11 +1,11 @@
 Todo
 ------
-
-1. Add gui tests
-2. use logging.debug / log file for more prints
-3. Allow config for tmpl, redis_arg, status_gui_arg
-4. Add well-explained readme
-4. Use config.pluginmanager.hasplugin('plugin_name') when needed
+** use travis - install redis - how to run it **
+1. Allow config for tmpl, redis_arg, status_gui_arg
+2. Add well-explained readme
+3. use logging.debug / log file for more prints
+4. Add gui tests
+5. Use config.pluginmanager.hasplugin('plugin_name') when needed
 
 
 Done
