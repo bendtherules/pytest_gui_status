@@ -8,6 +8,7 @@ import tempfile
 import shutil
 
 REDIS_TEST_PORT = status_plugin.REDIS_PORT + 1
+s = status_plugin.s
 
 
 class patched_chdir(object):
@@ -56,13 +57,13 @@ def test_whole_1(tmpdir):
     dir_name = os.getcwd()
     assert (dir_name == path_case)
     redis_db = redis.StrictRedis(host='localhost', port=REDIS_TEST_PORT, db=0)
-    hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+    hash_dir_name = s(redis_db.hget("directories_to_hash", dir_name))
 
     assert (redis_db.llen("{hash_a}_pass".format(hash_a=hash_dir_name)) == 1)
     assert (redis_db.llen("{hash_a}_fail".format(hash_a=hash_dir_name)) == 1)
     assert (redis_db.llen("{hash_a}_skip".format(hash_a=hash_dir_name)) == 0)
 
-    collected_tests = redis_db.lrange("{hash_a}_collect".format(hash_a=hash_dir_name), 0, -1)
+    collected_tests = s(redis_db.lrange("{hash_a}_collect".format(hash_a=hash_dir_name), 0, -1))
     assert (collected_tests == ["test_1.py::test_pass", "test_1.py::test_fail"])
 
 
@@ -84,7 +85,7 @@ def test_whole_2(tmpdir):
 
     dir_name = path_case
     redis_db = redis.StrictRedis(host='localhost', port=REDIS_TEST_PORT, db=0)
-    hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+    hash_dir_name = s(redis_db.hget("directories_to_hash", dir_name))
 
     assert (redis_db.llen("{hash_a}_pass".format(hash_a=hash_dir_name)) == 1)
     assert (redis_db.llen("{hash_a}_fail".format(hash_a=hash_dir_name)) == 2)

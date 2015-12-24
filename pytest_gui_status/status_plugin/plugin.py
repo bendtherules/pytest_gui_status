@@ -37,6 +37,32 @@ command_status_gui_gen = "pytest_gui_status \"{norm_dir_name}\""
 # make bulk changes with pipeline
 
 
+def s(input_):
+    ''' Convert str or uncode or bytes to str.
+    If list, do it for all of them.
+    If others, return as is. '''
+
+    if hasattr(input_, "__iter__"):
+        return [s(ele) for ele in input_]
+
+    try:
+        assert(type(input_) in [str, unicode, bytes])
+    except AssertionError:
+        return input_
+
+    import sys
+    PY3 = sys.version_info > (3,)
+
+    if PY3:
+        if type(input_) == bytes:
+            str_ = bytes.decode(input_)
+            return str_
+
+    # either str or unicode
+    str_ = str(input_)
+    return str_
+
+
 class Helpers(object):
 
     @staticmethod
@@ -59,12 +85,12 @@ class Helpers(object):
         else:
             print("Redis couldnt start there, trying to check if already running on that port")
             redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
-            if redis_db.ping() and redis_db.get("PYTEST_STATUS_DB") == "1":
+            if redis_db.ping() and s(redis_db.get("PYTEST_STATUS_DB")) == "1":
                 print("Yup, it was already running")
             else:
                 print("** Not found existing redis, couldnt connect, check! **")
                 print("debug pinging... {ping_result}".format(ping_result=redis_db.ping()))
-                print("debug PYTEST_STATUS_DB ==... {0}".format(redis_db.get("PYTEST_STATUS_DB")))
+                print("debug PYTEST_STATUS_DB ==... {0}".format(s(redis_db.get("PYTEST_STATUS_DB"))))
                 sys.exit()
 
         hash_dir_name = hash(dir_name)
@@ -90,10 +116,10 @@ class Helpers(object):
         '''
         # craete redis connection
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
-        hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+        hash_dir_name = s(redis_db.hget("directories_to_hash", dir_name))
         assert hash_dir_name is not None
 
-        existing_gui_pid = redis_db.get("{hash_a}_gui_pid".format(hash_a=hash_dir_name))
+        existing_gui_pid = s(redis_db.get("{hash_a}_gui_pid".format(hash_a=hash_dir_name)))
         # can be string or None. If string, make it int
         if existing_gui_pid:
             existing_gui_pid = int(existing_gui_pid)
@@ -109,7 +135,7 @@ class Helpers(object):
     def on_collectstart(dir_name):
         # craete redis connection
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
-        hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+        hash_dir_name = s(redis_db.hget("directories_to_hash", dir_name))
         assert hash_dir_name is not None
 
         redis_db.set("{hash_a}_state".format(hash_a=hash_dir_name), "collect")
@@ -121,7 +147,7 @@ class Helpers(object):
     def on_collectend(dir_name, list_test_name):
         # craete redis connection
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
-        hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+        hash_dir_name = s(redis_db.hget("directories_to_hash", dir_name))
         assert hash_dir_name is not None
 
         redis_db.rpush("{hash_a}_collect".format(hash_a=hash_dir_name), *list_test_name)
@@ -133,7 +159,7 @@ class Helpers(object):
     def on_test_eachstart(dir_name):
         # craete redis connection
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
-        hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+        hash_dir_name = s(redis_db.hget("directories_to_hash", dir_name))
         assert hash_dir_name is not None
 
         redis_db.set("{hash_a}_state".format(hash_a=hash_dir_name), "runtest")
@@ -145,7 +171,7 @@ class Helpers(object):
     def on_test_eachend(dir_name, list_test_result):
         # craete redis connection
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
-        hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+        hash_dir_name = s(redis_db.hget("directories_to_hash", dir_name))
         assert hash_dir_name is not None
 
         list_testname_pass = [test_result.nodeid for test_result in
@@ -175,7 +201,7 @@ class Helpers(object):
     def on_end(dir_name):
         # craete redis connection
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
-        hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+        hash_dir_name = s(redis_db.hget("directories_to_hash", dir_name))
         assert hash_dir_name is not None
 
         redis_db.set("{hash_a}_state".format(hash_a=hash_dir_name), "end")
@@ -187,7 +213,7 @@ class Helpers(object):
     def on_start_reset(dir_name):
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
 
-        hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+        hash_dir_name = s(redis_db.hget("directories_to_hash", dir_name))
         assert hash_dir_name is not None
 
         list_gen_varname = ["{hash_a}_state", "{hash_a}_last_updated", "{hash_a}_collect", "{hash_a}_pass", "{hash_a}_fail", "{hash_a}_skip"]
@@ -201,7 +227,7 @@ class Helpers(object):
         # update_last_updated in redis. If pipe provided, queue the command instead.
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
 
-        hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+        hash_dir_name = s(redis_db.hget("directories_to_hash", dir_name))
         assert hash_dir_name is not None
 
         cur_iso_datetime = datetime.datetime.now().isoformat()
