@@ -63,6 +63,8 @@ class Helpers(object):
                 print("Yup, it was already running")
             else:
                 print("** Not found existing redis, couldnt connect, check! **")
+                print("debug pinging... {ping_result}".format(ping_result=redis_db.ping()))
+                print("debug PYTEST_STATUS_DB ==... {0}".format(redis_db.get("PYTEST_STATUS_DB")))
                 sys.exit()
 
         hash_dir_name = hash(dir_name)
