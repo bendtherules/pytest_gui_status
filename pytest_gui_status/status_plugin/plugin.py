@@ -50,9 +50,9 @@ def s(input_):
 
     try:
         if PY3:
-            assert(type(input_) in [str, unicode, bytes])
-        else:
             assert(type(input_) in [str, bytes])
+        else:
+            assert(type(input_) in [str, unicode, bytes])
     except AssertionError:
         return input_
 
