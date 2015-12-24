@@ -45,7 +45,7 @@ def s(input_):
     import sys
     PY3 = sys.version_info > (3,)
 
-    if hasattr(input_, "__iter__"):
+    if isinstance(input_, list):
         return [s(ele) for ele in input_]
 
     try:
