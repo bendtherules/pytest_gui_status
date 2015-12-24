@@ -2,7 +2,7 @@
 
 import redis
 import pytest
-from pytest_gui_status.status_plugin.plugin import REDIS_PORT
+from pytest_gui_status.status_plugin.plugin import REDIS_PORT, s
 
 
 class PYTEST_DATA(object):
@@ -21,18 +21,18 @@ def get_cur_data():
 
     dir_name = PYTEST_DATA.data["dir_name_start"]
     redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)
-    hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+    hash_dir_name = s(redis_db.hget("directories_to_hash", dir_name))
     assert hash_dir_name is not None
 
     data = {}
 
-    data["state"] = redis_db.get("{hash_a}_state".format(hash_a=hash_dir_name))
-    data["last_updated"] = redis_db.get("{hash_a}_last_updated".format(hash_a=hash_dir_name))
+    data["state"] = s(redis_db.get("{hash_a}_state".format(hash_a=hash_dir_name)))
+    data["last_updated"] = s(redis_db.get("{hash_a}_last_updated".format(hash_a=hash_dir_name)))
 
-    data["collect"] = redis_db.lrange("{hash_a}_collect".format(hash_a=hash_dir_name), 0, -1)
-    data["pass"] = redis_db.lrange("{hash_a}_pass".format(hash_a=hash_dir_name), 0, -1)
-    data["fail"] = redis_db.lrange("{hash_a}_fail".format(hash_a=hash_dir_name), 0, -1)
-    data["skip"] = redis_db.lrange("{hash_a}_skip".format(hash_a=hash_dir_name), 0, -1)
+    data["collect"] = s(redis_db.lrange("{hash_a}_collect".format(hash_a=hash_dir_name), 0, -1))
+    data["pass"] = s(redis_db.lrange("{hash_a}_pass".format(hash_a=hash_dir_name), 0, -1))
+    data["fail"] = s(redis_db.lrange("{hash_a}_fail".format(hash_a=hash_dir_name), 0, -1))
+    data["skip"] = s(redis_db.lrange("{hash_a}_skip".format(hash_a=hash_dir_name), 0, -1))
 
     # strip off the filename
     data["collect"] = [item.split("::")[-1] for item in data["collect"]]
