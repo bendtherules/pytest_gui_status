@@ -14,7 +14,7 @@ if env_redis_port:
 else:
     REDIS_PORT = 5946
 
-if os.environ["TRAVIS"] == "true":
+if os.environ.get("TRAVIS") == "true":
     command_redis_server_gen = "redis-server --port {port}"
 else:
     command_redis_server_gen = "redis-server --port {port} --maxheap 20MB"
@@ -42,16 +42,19 @@ def s(input_):
     If list, do it for all of them.
     If others, return as is. '''
 
+    import sys
+    PY3 = sys.version_info > (3,)
+
     if hasattr(input_, "__iter__"):
         return [s(ele) for ele in input_]
 
     try:
-        assert(type(input_) in [str, unicode, bytes])
+        if PY3:
+            assert(type(input_) in [str, unicode, bytes])
+        else:
+            assert(type(input_) in [str, bytes])
     except AssertionError:
         return input_
-
-    import sys
-    PY3 = sys.version_info > (3,)
 
     if PY3:
         if type(input_) == bytes:
