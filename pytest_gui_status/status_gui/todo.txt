@@ -1,6 +1,6 @@
 Todo
 ------
-** use travis - install redis - how to run it **
+
 1. Allow config for tmpl, redis_arg, status_gui_arg
 2. Add well-explained readme
 3. use logging.debug / log file for more prints
@@ -15,10 +15,11 @@ Done
 2. (---) responsive width of test
 3. (---) Time should update automatically
 4. (---) Launch only 1 instance of gui from plugin with pid check from redis_db
-5. (-) use pipelines when possible
+5. (-) Use pipelines when possible
 6. (---) Self Tests also pop up gui, add option for plugin
 9. (---) Register as pytest plugin in setup.py
-10. (---) check intermediate test steps like collect, testrun
+10. (---) Check intermediate test steps like collect, testrun
+11. (---) Use travis ci - install redis there
 
 
 Think
