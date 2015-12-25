@@ -6,7 +6,7 @@ addons:
     - redis-server
 
 python:
-  - "2.5"
+  # - "2.5" # tarvis errs
   - "2.6"
   - "2.7"
   # - "3.2" # humanfriendly cant install
@@ -16,7 +16,7 @@ python:
   - "3.5-dev"
   - "nightly"
   - "pypy"
-  - "pypy3"
+  # - "pypy3" # psutil errs
 
 install: 
   - "pip install --upgrade -r requirements.txt"     
