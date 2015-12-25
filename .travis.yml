@@ -1,5 +1,5 @@
 language: python
-cache: pip
+# cache: pip
 
 addons:
   apt:
@@ -23,7 +23,7 @@ python:
   # - "pypy3" # psutil errs
 
 install: 
-  - "pip install --user --upgrade -r requirements.txt"     
+  - "pip install --upgrade -r requirements.txt"     
   - "pip install -e ."
 
 # command to run tests
