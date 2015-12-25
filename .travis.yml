@@ -17,7 +17,7 @@ python:
   - "3.5"
   - "nightly"
   - "pypy"
-  # not included, for some reason
+  # not included
   # - "2.5" # tarvis errs
   # - "3.2" # humanfriendly cant install
   # - "pypy3" # psutil errs
