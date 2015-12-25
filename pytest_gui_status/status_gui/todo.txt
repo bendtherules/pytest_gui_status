@@ -6,6 +6,8 @@ Todo
 3. use logging.debug / log file for more prints
 4. Add gui tests
 5. Use config.pluginmanager.hasplugin('plugin_name') when needed
+6. Release on pypi
+7. Test on Appveyor - install redis via chocolatey
 
 
 Done
