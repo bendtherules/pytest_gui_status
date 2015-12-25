@@ -7,16 +7,19 @@ addons:
     - redis-server
 
 python:
-  # - "2.5" # tarvis errs
-  - "2.6"
+  # major versions
   - "2.7"
-  # - "3.2" # humanfriendly cant install
+  - "3.5-dev"
+  # other versions
+  - "2.6"
   - "3.3"
   - "3.4"
   - "3.5"
-  - "3.5-dev"
   - "nightly"
   - "pypy"
+  # not included
+  # - "2.5" # tarvis errs
+  # - "3.2" # humanfriendly cant install
   # - "pypy3" # psutil errs
 
 install: 
