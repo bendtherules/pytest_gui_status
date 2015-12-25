@@ -8,17 +8,19 @@ import psutil
 import datetime
 
 
-env_redis_port = os.environ.get("pytest_status_port")
+env_redis_port = os.environ.get("PYTEST_STATUS_PORT")
 if env_redis_port:
     REDIS_PORT = int(env_redis_port)
 else:
     REDIS_PORT = 5946
 
-if os.environ.get("TRAVIS") == "true":
-    command_redis_server_gen = "redis-server --port {port}"
-else:
-    command_redis_server_gen = "redis-server --port {port} --maxheap 20MB"
-command_redis_server = command_redis_server_gen.format(port=REDIS_PORT)
+REDIS_PATH = os.environ.get("REDIS_PATH") or "redis-server"
+REDIS_ARGS = os.environ.get("REDIS_ARGS") or ""
+
+command_redis_server_gen = "{REDIS_PATH} --port {REDIS_PORT} {REDIS_ARGS}"
+command_redis_server = command_redis_server_gen.format(REDIS_PATH=REDIS_PATH,
+                                                       REDIS_ARGS=REDIS_ARGS,
+                                                       REDIS_PORT=REDIS_PORT)
 
 command_status_gui_gen = "pytest_gui_status \"{norm_dir_name}\""
 
@@ -252,6 +254,7 @@ def pytest_configure(config):
 
 def pytest_sessionstart(session):
     config = session.config
+
     PYTEST_DATA.data["dir_name_start"] = str(session.startdir)
 
     Helpers.on_start(PYTEST_DATA.data["dir_name_start"])

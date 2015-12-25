@@ -39,7 +39,7 @@ def create_temp_case(case_name, path_tmpdir=None):
 
 
 @patch.dict("os.environ",
-            {"pytest_status_port": str(REDIS_TEST_PORT)})
+            {"PYTEST_STATUS_PORT": str(REDIS_TEST_PORT)})
 def test_whole_1(tmpdir):
     '''
     Integration test
@@ -49,7 +49,7 @@ def test_whole_1(tmpdir):
     path_case = create_temp_case("case_1", tmpdir)
     os.chdir(path_case)
 
-    assert(os.environ.get("pytest_status_port") == str(REDIS_TEST_PORT))
+    assert(os.environ.get("PYTEST_STATUS_PORT") == str(REDIS_TEST_PORT))
 
     popen_pytest = subprocess.Popen(["py.test", "-s"], shell=True)
     popen_pytest.wait()
@@ -68,7 +68,7 @@ def test_whole_1(tmpdir):
 
 
 @patch.dict("os.environ",
-            {"pytest_status_port": str(REDIS_TEST_PORT)})
+            {"PYTEST_STATUS_PORT": str(REDIS_TEST_PORT)})
 def test_whole_2(tmpdir):
     '''
     Integration test
@@ -93,7 +93,7 @@ def test_whole_2(tmpdir):
 
 
 @patch.dict("os.environ",
-            {"pytest_status_port": str(REDIS_TEST_PORT)})
+            {"PYTEST_STATUS_PORT": str(REDIS_TEST_PORT)})
 def test_intermediate_1(tmpdir):
     '''
     Integration test
