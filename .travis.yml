@@ -7,7 +7,7 @@ addons:
     - redis-server
 
 python:
-  # major versions
+  # major versions, test first
   - "2.7"
   - "3.5-dev"
   # other versions
