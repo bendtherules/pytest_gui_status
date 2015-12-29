@@ -23,7 +23,6 @@ def main():
     screen_topright = screen_geo.topRight()
     app.x_pos = (screen_topright.x() - 20) - app.width
     app.y_pos = (screen_topright.y() + 20)
-    # import pdb;pdb.set_trace()
 
     # GUI configarg
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
