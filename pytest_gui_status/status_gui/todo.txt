@@ -1,7 +1,7 @@
 Todo
 ------
 
-1. Allow config for tmpl, 
+1. Allow config for template
 1.1. Test - env config for redis
 2. Add well-explained readme
 3. use logging.debug / log file for more prints
@@ -9,6 +9,7 @@ Todo
 5. Use config.pluginmanager.hasplugin('plugin_name') when needed
 6. Release on pypi
 7. Test on Appveyor - install redis via chocolatey
+8. Give icon to gui + preferably dynamic with status
 
 
 Done
