@@ -114,10 +114,9 @@ def test_intermediate_1(tmpdir):
              "REDIS_ARGS": "--test_arg = test_val",
              "PYTEST_STATUS_PORT": "1234"})
 def test_env_redis_1():
-    # REDIS_PATH
-    # REDIS_ARGS
-    # REDIS_PORT
-    # del status_plugin
+    '''
+    Test that redis config via env variables - REDIS_PATH, REDIS_ARGS, PYTEST_STATUS_PORT work as intended.
+    '''
 
     import pytest_gui_status.status_plugin.plugin
     reload(pytest_gui_status.status_plugin.plugin)
