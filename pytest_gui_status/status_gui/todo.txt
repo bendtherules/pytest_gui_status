@@ -2,7 +2,6 @@ Todo
 ------
 
 1. Allow config for template
-1.1. Test - env config for redis
 2. Add well-explained readme
 3. use logging.debug / log file for more prints
 4. Add gui tests
@@ -25,7 +24,7 @@ Done
 10. (---) Check intermediate test steps like collect, testrun
 11. (---) Use travis ci + install redis there
 12. (---) Show gui only with option --status_gui
-13. (---) env config for redis
+13. (---) env config for redis + test for that
 
 
 Think
