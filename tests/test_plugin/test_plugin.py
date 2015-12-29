@@ -112,15 +112,15 @@ def test_intermediate_1(tmpdir):
 @patch.dict("os.environ",
             {"REDIS_PATH": "test_redis",
              "REDIS_ARGS": "--test_arg = test_val",
-             "REDIS_PORT": "1234"})
-def test_env_redis_1(monkeypatch):
+             "PYTEST_STATUS_PORT": "1234"})
+def test_env_redis_1():
     # REDIS_PATH
     # REDIS_ARGS
     # REDIS_PORT
     # del status_plugin
-    monkeypatch.setenv("REDIS_PATH", "test")
-    print("recalc")
-    status_plugin.calc_globals()
 
-    redis_cmd_final = status_plugin.command_redis_server
-    assert(redis_cmd_final == "test_redis --port 1234 --test_arg=test_val")
+    import pytest_gui_status.status_plugin.plugin
+    reload(pytest_gui_status.status_plugin.plugin)
+
+    redis_cmd_final = pytest_gui_status.status_plugin.plugin.command_redis_server
+    assert(redis_cmd_final == "test_redis --port 1234 --test_arg = test_val")

@@ -1,6 +1,7 @@
 Todo
 ------
 
+** Add py.test -p no:gui_status while test**
 1. Allow config for template
 1.1. Test - env config for redis
 2. Add well-explained readme
