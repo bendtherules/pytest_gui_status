@@ -9,6 +9,8 @@ Todo
 6. Release on pypi
 7. Test on Appveyor - install redis via chocolatey
 8. Give icon to gui + preferably dynamic with status
+9. Add redis sudden fail tests - shutdown or crash after startup -\
+module shouldnt crash/ work incorrectly, should exit with error message
 
 
 Done
