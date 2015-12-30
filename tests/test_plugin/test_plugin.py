@@ -6,7 +6,6 @@ import redis
 import os
 import tempfile
 import shutil
-import importlib
 
 REDIS_TEST_PORT = status_plugin.REDIS_PORT + 1
 s = status_plugin.s
@@ -37,6 +36,29 @@ def create_temp_case(case_name, path_tmpdir=None):
         shutil.copytree(path_case, path_tmpdir_case)
 
     return path_tmpdir_case
+
+
+def reload_2_3(module_name):
+    '''
+    reload that works in all versions of Python.
+    Uses builtin reload in py2, imp.reload for <=py3.3,
+    importlib.reload for >=3.4
+    '''
+
+    from sys import version_info
+    major_ver, minor_ver = version_info[:2]
+
+    if major_ver == 2:
+        reload(module_name)
+    elif major_ver == 3 and minor_ver <= 3:
+        import imp
+        imp.reload(module_name)
+    elif major_ver == 3 and minor_ver >= 4:
+        import importlib
+        importlib.reload(module_name)
+    else:
+        raise NotImplementedError("Not sure how to reload in "
+                                  "this version of Python, supported upto 3.x")
 
 
 @patch.dict("os.environ",
@@ -120,7 +142,7 @@ def test_env_redis_1():
     '''
 
     import pytest_gui_status.status_plugin.plugin
-    importlib.reload(pytest_gui_status.status_plugin.plugin)
+    reload_2_3(pytest_gui_status.status_plugin.plugin)
 
     redis_cmd_final = pytest_gui_status.status_plugin.plugin.command_redis_server
     assert(redis_cmd_final == "test_redis --port 1234 --test_arg = test_val")
