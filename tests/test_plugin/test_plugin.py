@@ -6,6 +6,7 @@ import redis
 import os
 import tempfile
 import shutil
+import importlib
 
 REDIS_TEST_PORT = status_plugin.REDIS_PORT + 1
 s = status_plugin.s
@@ -119,7 +120,7 @@ def test_env_redis_1():
     '''
 
     import pytest_gui_status.status_plugin.plugin
-    reload(pytest_gui_status.status_plugin.plugin)
+    importlib.reload(pytest_gui_status.status_plugin.plugin)
 
     redis_cmd_final = pytest_gui_status.status_plugin.plugin.command_redis_server
     assert(redis_cmd_final == "test_redis --port 1234 --test_arg = test_val")
