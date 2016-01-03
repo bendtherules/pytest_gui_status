@@ -1,16 +1,20 @@
 Todo
 ------
 
-1. Allow config for template
-2. Add well-explained readme
-3. use logging.debug / log file for more prints
-4. Add gui tests
-5. Use config.pluginmanager.hasplugin('plugin_name') when needed
-6. Release on pypi
-7. Test on Appveyor - install redis via chocolatey
-8. Give icon to gui + preferably dynamic with status
-9. Add redis sudden fail tests - shutdown or crash after startup -\
-module shouldnt crash/ work incorrectly, should exit with error message
+1. Add redis sudden fail tests - shutdown or crash after startup\
+    - module shouldnt crash/ work incorrectly, should exit with error message
+2 Tests with setup/teardown/class when needed*
+3 Redis test port from env*
+4 Faster Tests wiith timeout, if required by extra api to params*
+5. Allow config for template
+6. Add cli doc for --show_status_gui
+7. Add well-explained readme
+8. use logging.debug / log file for more prints
+9. Add gui tests
+10. Use config.pluginmanager.hasplugin('plugin_name') when needed
+11. Release on pypi
+12. Test on Appveyor - install redis via chocolatey
+13. Give icon to gui + preferably dynamic with status
 
 
 Done
