@@ -43,6 +43,9 @@ def reload_2_3(module_name):
     reload that works in all versions of Python.
     Uses builtin reload in py2, imp.reload for <=py3.3,
     importlib.reload for >=3.4
+
+    The module six has similar functionalities,
+    but would be too huge a dependency for this simple case.
     '''
 
     from sys import version_info

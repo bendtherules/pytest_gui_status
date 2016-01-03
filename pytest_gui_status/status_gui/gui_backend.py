@@ -59,7 +59,8 @@ class Controller(htmlPy.Object):
         hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
 
         if hash_dir_name is None:
-            raise Exception("dir_name = {dir_name} not found in redis db".format(
+            self.app_gui.stop()
+            raise redis.exceptions.ConnectionError("dir_name = {dir_name} not found in redis db".format(
                 dir_name=dir_name))
 
         dict_state = {}
