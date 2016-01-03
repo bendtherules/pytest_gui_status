@@ -1,6 +1,7 @@
 redis
 pytest
-python-dateutil
+htmlpy
 
-psutil
+python-dateutil
 humanfriendly
+psutil
