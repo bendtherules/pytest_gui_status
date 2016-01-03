@@ -1,5 +1,4 @@
 import pytest_gui_status.status_plugin.plugin as status_plugin
-import pytest_gui_status.status_gui.gui_backend as gui_backend
 
 from mock import patch, MagicMock
 import redis
@@ -7,11 +6,17 @@ import pytest
 
 REDIS_TEST_PORT = status_plugin.REDIS_PORT + 1
 
+mock_htmlPy_module = MagicMock()
+mock_htmlPy_module.Object = object
+mock_htmlPy_module.Slot.return_value = (lambda func: func)
+
 
 @patch.dict("os.environ",
             {"PYTEST_STATUS_PORT": str(REDIS_TEST_PORT)})
+@patch.dict("sys.modules", {"htmlPy": mock_htmlPy_module})
 def test_redis_fail_1(tmpdir):
     # load new redis port
+    import pytest_gui_status.status_gui.gui_backend as gui_backend
     reload(gui_backend)
     reload(status_plugin)
 
@@ -36,8 +41,10 @@ def test_redis_fail_1(tmpdir):
 
 @patch.dict("os.environ",
             {"PYTEST_STATUS_PORT": str(REDIS_TEST_PORT)})
+@patch.dict("sys.modules", {"htmlPy": mock_htmlPy_module})
 def test_redis_fail_2(tmpdir):
     # load new redis port
+    import pytest_gui_status.status_gui.gui_backend as gui_backend
     reload(gui_backend)
     reload(status_plugin)
 
@@ -64,8 +71,10 @@ def test_redis_fail_2(tmpdir):
 
 @patch.dict("os.environ",
             {"PYTEST_STATUS_PORT": str(REDIS_TEST_PORT)})
+@patch.dict("sys.modules", {"htmlPy": mock_htmlPy_module})
 def test_redis_fail_3(tmpdir):
     # load new redis port
+    import pytest_gui_status.status_gui.gui_backend as gui_backend
     reload(gui_backend)
     reload(status_plugin)
 
@@ -93,8 +102,10 @@ def test_redis_fail_3(tmpdir):
 
 @patch.dict("os.environ",
             {"PYTEST_STATUS_PORT": str(REDIS_TEST_PORT)})
+@patch.dict("sys.modules", {"htmlPy": mock_htmlPy_module})
 def test_redis_fail_4(tmpdir):
     # load new redis port
+    import pytest_gui_status.status_gui.gui_backend as gui_backend
     reload(gui_backend)
     reload(status_plugin)
 
