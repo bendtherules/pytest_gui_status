@@ -1,7 +1,6 @@
 redis
 pytest
 htmlpy
-PySide
 
 python-dateutil
 humanfriendly

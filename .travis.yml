@@ -5,6 +5,7 @@ addons:
   apt:
     packages:
     - redis-server
+    - python-pyside
 
 python:
   # major versions, test first
