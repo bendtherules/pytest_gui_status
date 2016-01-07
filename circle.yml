@@ -1,18 +1,6 @@
 machine:
   python:
-    version:
-      # major versions, test first
-      - "2.7"
-      - "3.5.0"
-      # other versions
-      - "2.6.8"
-      - "3.3.3"
-      - "3.4.3"
-      - "pypy-2.5.0"
-      # not included, for incompatibility
-      # - "2.5" # tarvis errs
-      # - "3.2" # humanfriendly cant install
-      # - "pypy3" # psutil errs
+    version: 2.7
 
 dependencies:
   pre:
