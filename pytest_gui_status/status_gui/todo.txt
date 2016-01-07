@@ -1,6 +1,7 @@
 Todo
 ------
 
+** Use redis_db fixture for travis debugging**
 1. Add redis sudden fail tests - shutdown or crash after startup\
     - module shouldnt crash/ work incorrectly, should exit with error message
 2 Tests with setup/teardown/class when needed*

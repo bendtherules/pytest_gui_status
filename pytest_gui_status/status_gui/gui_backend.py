@@ -1,5 +1,5 @@
 import htmlPy
-from utils import render_template
+from .utils import render_template
 import os
 import redis
 import dateutil.parser
