@@ -11,5 +11,7 @@ dependencies:
     - "pip install -e ."
 
 test:
+  pre:
+    - ls
   override:
     - py.test -v
