@@ -8,7 +8,7 @@ import humanfriendly
 import os.path
 
 
-env_redis_port = os.environ.get("pytest_status_port")
+env_redis_port = os.environ.get("PYTEST_STATUS_PORT")
 if env_redis_port:
     REDIS_PORT = int(env_redis_port)
 else:
