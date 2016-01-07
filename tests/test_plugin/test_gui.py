@@ -4,6 +4,8 @@ from mock import patch, MagicMock
 import redis
 import pytest
 
+from ..utils_test import create_temp_case, reload_2_3
+
 REDIS_TEST_PORT = status_plugin.REDIS_PORT + 1
 
 mock_htmlPy_module = MagicMock()
@@ -41,8 +43,8 @@ def redis_master(request, auto_shutdown=True):
 def test_redis_fail_1(tmpdir):
     # load new redis port
     import pytest_gui_status.status_gui.gui_backend as gui_backend
-    reload(gui_backend)
-    reload(status_plugin)
+    reload_2_3(gui_backend)
+    reload_2_3(status_plugin)
 
     # dont start redis. Also if redis running, stop it
     redis_db = redis.StrictRedis(host='localhost', port=REDIS_TEST_PORT, db=0)
@@ -69,8 +71,8 @@ def test_redis_fail_1(tmpdir):
 def test_redis_fail_2(tmpdir, redis_master):
     # load new redis port
     import pytest_gui_status.status_gui.gui_backend as gui_backend
-    reload(gui_backend)
-    reload(status_plugin)
+    reload_2_3(gui_backend)
+    reload_2_3(status_plugin)
 
     # start Redis
     redis_master.init(tmpdir.strpath)
@@ -100,8 +102,8 @@ def test_redis_fail_2(tmpdir, redis_master):
 def test_redis_fail_3(tmpdir, redis_master):
     # load new redis port
     import pytest_gui_status.status_gui.gui_backend as gui_backend
-    reload(gui_backend)
-    reload(status_plugin)
+    reload_2_3(gui_backend)
+    reload_2_3(status_plugin)
 
     # start Redis
     redis_master.init(tmpdir.strpath)
@@ -130,8 +132,8 @@ def test_redis_fail_3(tmpdir, redis_master):
 def test_redis_fail_4(tmpdir, redis_master):
     # load new redis port
     import pytest_gui_status.status_gui.gui_backend as gui_backend
-    reload(gui_backend)
-    reload(status_plugin)
+    reload_2_3(gui_backend)
+    reload_2_3(status_plugin)
 
     # start Redis
     redis_master.init(tmpdir.strpath)
