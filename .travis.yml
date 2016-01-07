@@ -27,4 +27,4 @@ install:
   - "pip install -e ."
 
 # command to run tests
-script: py.test -v  -k redis_fail_2
+script: py.test -v
