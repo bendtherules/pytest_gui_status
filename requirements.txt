@@ -6,3 +6,4 @@ jinja2
 python-dateutil
 humanfriendly
 psutil
+mock
