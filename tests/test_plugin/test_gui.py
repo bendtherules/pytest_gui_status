@@ -4,7 +4,7 @@ from mock import patch, MagicMock
 import redis
 import pytest
 
-from ..utils_test import create_temp_case, reload_2_3
+from ..utils_test import reload_2_3
 
 REDIS_TEST_PORT = status_plugin.REDIS_PORT + 1
 
