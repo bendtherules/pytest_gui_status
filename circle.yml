@@ -1,0 +1,29 @@
+machine:
+  python:
+    version:
+      # major versions, test first
+      - "2.7"
+      - "3.5-dev"
+      # other versions
+      - "2.6"
+      - "3.3"
+      - "3.4"
+      - "3.5"
+      - "nightly"
+      - "pypy"
+      # not included, for incompatibility
+      # - "2.5" # tarvis errs
+      # - "3.2" # humanfriendly cant install
+      # - "pypy3" # psutil errs
+
+dependencies:
+  pre:
+    - sudo apt-get update
+    - sudo apt-get install redis-server
+  override:
+    - "pip install --upgrade -r requirements.txt"     
+    - "pip install -e ."
+
+test:
+  override:
+    - py.test -v
