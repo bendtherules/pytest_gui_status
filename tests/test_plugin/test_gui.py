@@ -11,6 +11,30 @@ mock_htmlPy_module.Object = object
 mock_htmlPy_module.Slot.return_value = (lambda func: func)
 
 
+@pytest.fixture()
+def redis_master(request, auto_shutdown=True):
+    import pytest_gui_status.status_plugin.plugin as status_plugin
+
+    class Redis_master_manager(object):
+        dirname = None
+        started = False
+
+        @classmethod
+        def init(cls, dirname):
+            cls.dirname = dirname
+            cls.started = True
+            status_plugin.Helpers.on_start(cls.dirname)
+
+    # stop redis master after test completion, whether passes or fails
+    def fin():
+        if auto_shutdown and Redis_master_manager.started:
+            redis_db = redis.StrictRedis(host='localhost', port=status_plugin.REDIS_PORT, db=0)
+            redis_db.shutdown()
+    request.addfinalizer(fin)
+
+    return Redis_master_manager  # provide the fixture value
+
+
 @patch.dict("os.environ",
             {"PYTEST_STATUS_PORT": str(REDIS_TEST_PORT)})
 @patch.dict("sys.modules", {"htmlPy": mock_htmlPy_module})
@@ -42,14 +66,16 @@ def test_redis_fail_1(tmpdir):
 @patch.dict("os.environ",
             {"PYTEST_STATUS_PORT": str(REDIS_TEST_PORT)})
 @patch.dict("sys.modules", {"htmlPy": mock_htmlPy_module})
-def test_redis_fail_2(tmpdir):
+def test_redis_fail_2(tmpdir, redis_master):
     # load new redis port
     import pytest_gui_status.status_gui.gui_backend as gui_backend
     reload(gui_backend)
     reload(status_plugin)
 
     # start Redis
-    status_plugin.Helpers.on_start(tmpdir.strpath)
+    redis_master.init(tmpdir.strpath)
+
+    # status_plugin.Helpers.on_start(tmpdir.strpath)
 
     # make PYTEST_STATUS_DB value corrupt/incorrect
     redis_db = redis.StrictRedis(host='localhost', port=REDIS_TEST_PORT, db=0)
@@ -65,21 +91,20 @@ def test_redis_fail_2(tmpdir):
 
     fake_app_gui.stop.assert_called_with()
 
-    # cleanup or in next test it cant be started there
-    redis_db.shutdown()
+    # auto cleanup of redis master by fixture
 
 
 @patch.dict("os.environ",
             {"PYTEST_STATUS_PORT": str(REDIS_TEST_PORT)})
 @patch.dict("sys.modules", {"htmlPy": mock_htmlPy_module})
-def test_redis_fail_3(tmpdir):
+def test_redis_fail_3(tmpdir, redis_master):
     # load new redis port
     import pytest_gui_status.status_gui.gui_backend as gui_backend
     reload(gui_backend)
     reload(status_plugin)
 
     # start Redis
-    status_plugin.Helpers.on_start(tmpdir.strpath)
+    redis_master.init(tmpdir.strpath)
 
     # delete PYTEST_STATUS_DB
     redis_db = redis.StrictRedis(host='localhost', port=REDIS_TEST_PORT, db=0)
@@ -96,23 +121,22 @@ def test_redis_fail_3(tmpdir):
 
     fake_app_gui.stop.assert_called_with()
 
-    # cleanup or in next test it cant be started there
-    redis_db.shutdown()
+    # auto cleanup of redis master by fixture
 
 
 @patch.dict("os.environ",
             {"PYTEST_STATUS_PORT": str(REDIS_TEST_PORT)})
 @patch.dict("sys.modules", {"htmlPy": mock_htmlPy_module})
-def test_redis_fail_4(tmpdir):
+def test_redis_fail_4(tmpdir, redis_master):
     # load new redis port
     import pytest_gui_status.status_gui.gui_backend as gui_backend
     reload(gui_backend)
     reload(status_plugin)
 
     # start Redis
-    status_plugin.Helpers.on_start(tmpdir.strpath)
+    redis_master.init(tmpdir.strpath)
 
-    redis_db = redis.StrictRedis(host='localhost', port=REDIS_TEST_PORT, db=0)
+    # redis_db = redis.StrictRedis(host='localhost', port=REDIS_TEST_PORT, db=0)
 
     # mock Controller requirements and app_gui.stop
     # provide invalid path
@@ -127,5 +151,4 @@ def test_redis_fail_4(tmpdir):
 
     fake_app_gui.stop.assert_called_with()
 
-    # cleanup or in next test it cant be started there
-    redis_db.shutdown()
+    # auto cleanup of redis master by fixture
