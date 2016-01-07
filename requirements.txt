@@ -6,4 +6,6 @@ jinja2
 python-dateutil
 humanfriendly
 psutil
+setuptools
+funcsigs
 mock
