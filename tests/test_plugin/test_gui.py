@@ -4,6 +4,8 @@ from mock import patch, MagicMock
 import redis
 import pytest
 
+from ..utils_test import reload_2_3
+
 REDIS_TEST_PORT = status_plugin.REDIS_PORT + 1
 
 mock_htmlPy_module = MagicMock()
@@ -41,8 +43,8 @@ def redis_master(request, auto_shutdown=True):
 def test_redis_fail_1(tmpdir):
     # load new redis port
     import pytest_gui_status.status_gui.gui_backend as gui_backend
-    reload(gui_backend)
-    reload(status_plugin)
+    reload_2_3(gui_backend)
+    reload_2_3(status_plugin)
 
     # dont start redis. Also if redis running, stop it
     redis_db = redis.StrictRedis(host='localhost', port=REDIS_TEST_PORT, db=0)
@@ -59,7 +61,7 @@ def test_redis_fail_1(tmpdir):
     with pytest.raises(redis.exceptions.ConnectionError) as error_info:
         gui_backend.Controller(fake_app_gui).redraw()
 
-    assert error_info.value.message == "Cant connect to this socket. Is redis running?\n" \
+    assert str(error_info.value) == "Cant connect to this socket. Is redis running?\n" \
         + "Stopping pytest_status_gui"
 
 
@@ -69,8 +71,8 @@ def test_redis_fail_1(tmpdir):
 def test_redis_fail_2(tmpdir, redis_master):
     # load new redis port
     import pytest_gui_status.status_gui.gui_backend as gui_backend
-    reload(gui_backend)
-    reload(status_plugin)
+    reload_2_3(gui_backend)
+    reload_2_3(status_plugin)
 
     # start Redis
     redis_master.init(tmpdir.strpath)
@@ -86,7 +88,7 @@ def test_redis_fail_2(tmpdir, redis_master):
     with pytest.raises(redis.exceptions.ConnectionError) as error_info:
         gui_backend.Controller(fake_app_gui).redraw()
 
-    assert error_info.value.message == "Redis is running on this port, but it is not related to pytest status\n"\
+    assert str(error_info.value) == "Redis is running on this port, but it is not related to pytest status\n"\
         + "Stopping pytest_status_gui"
 
     fake_app_gui.stop.assert_called_with()
@@ -100,8 +102,8 @@ def test_redis_fail_2(tmpdir, redis_master):
 def test_redis_fail_3(tmpdir, redis_master):
     # load new redis port
     import pytest_gui_status.status_gui.gui_backend as gui_backend
-    reload(gui_backend)
-    reload(status_plugin)
+    reload_2_3(gui_backend)
+    reload_2_3(status_plugin)
 
     # start Redis
     redis_master.init(tmpdir.strpath)
@@ -116,7 +118,7 @@ def test_redis_fail_3(tmpdir, redis_master):
     with pytest.raises(redis.exceptions.ConnectionError) as error_info:
         gui_backend.Controller(fake_app_gui).redraw()
 
-    assert error_info.value.message == "Redis is running on this port, but it is not related to pytest status\n"\
+    assert str(error_info.value) == "Redis is running on this port, but it is not related to pytest status\n"\
         + "Stopping pytest_status_gui"
 
     fake_app_gui.stop.assert_called_with()
@@ -130,8 +132,8 @@ def test_redis_fail_3(tmpdir, redis_master):
 def test_redis_fail_4(tmpdir, redis_master):
     # load new redis port
     import pytest_gui_status.status_gui.gui_backend as gui_backend
-    reload(gui_backend)
-    reload(status_plugin)
+    reload_2_3(gui_backend)
+    reload_2_3(status_plugin)
 
     # start Redis
     redis_master.init(tmpdir.strpath)
@@ -146,7 +148,7 @@ def test_redis_fail_4(tmpdir, redis_master):
     with pytest.raises(redis.exceptions.ConnectionError) as error_info:
         gui_backend.Controller(fake_app_gui).redraw()
 
-    assert error_info.value.message == "dir_name = {dir_name} not found in redis db".format(
+    assert str(error_info.value) == "dir_name = {dir_name} not found in redis db".format(
         dir_name=fake_app_gui.dir_name)
 
     fake_app_gui.stop.assert_called_with()

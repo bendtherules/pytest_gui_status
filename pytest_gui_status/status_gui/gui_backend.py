@@ -1,11 +1,12 @@
 import htmlPy
-from .utils import render_template
+from .utils_gui import render_template
 import os
 import redis
 import dateutil.parser
 from datetime import datetime
 import humanfriendly
 import os.path
+from ..utils import s
 
 
 env_redis_port = os.environ.get("PYTEST_STATUS_PORT")
@@ -49,7 +50,7 @@ class Controller(htmlPy.Object):
 
         try:
             # make sure that this is correct redis db
-            assert redis_db.get("PYTEST_STATUS_DB") == "1"
+            assert s(redis_db.get("PYTEST_STATUS_DB")) == "1"
         except AssertionError:
             self.app_gui.stop()
             raise redis.exceptions.ConnectionError("Redis is running on this port, but it is not related to pytest status\n"
