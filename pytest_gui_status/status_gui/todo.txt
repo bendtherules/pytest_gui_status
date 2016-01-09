@@ -1,20 +1,19 @@
 Todo
 ------
 
-1. Add redis sudden fail tests - shutdown or crash after startup\
-    - module shouldnt crash/ work incorrectly, should exit with error message
+1. Test gui_backend state loading from redis code
+
 2 Tests with setup/teardown/class when needed*
-3 Redis test port from env*
-4 Faster Tests wiith timeout, if required by extra api to params*
-5. Allow config for template
-6. Add cli doc for --show_status_gui
-7. Add well-explained readme
-8. use logging.debug / log file for more prints
-9. Add gui tests
-10. Use config.pluginmanager.hasplugin('plugin_name') when needed
-11. Release on pypi
-12. Test on Appveyor - install redis via chocolatey
-13. Give icon to gui + preferably dynamic with status
+3 Faster Tests wiith timeout, if required by extra api to params
+4. Allow config for template
+5. Add cli doc for --show_status_gui
+6. Add well-explained readme
+7. use logging.debug / log file for more prints
+8. Add gui tests
+9. Use config.pluginmanager.hasplugin('plugin_name') when needed
+10. Release on pypi
+11. Test on Appveyor - install redis via chocolatey
+12. Give icon to gui + preferably dynamic with status
 
 
 Done
@@ -32,7 +31,7 @@ Done
 12. (---) Show gui only with option --status_gui
 13. (---) env config for redis + test for that
 14. (---) Use redis_db fixture for travis debuggings
-
+15. (---) Add redis sudden fail tests - shutdown or crash after startup\
 
 Think
 -------
