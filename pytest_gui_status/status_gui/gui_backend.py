@@ -18,7 +18,6 @@ else:
 
 class Controller(htmlPy.Object):
     # GUI callable functions have to be inside a class.
-    # The class should be inherited from htmlPy.Object.
     dict_state_desc = {
         "start": "Starting Tests",
         "collect": "Collecting Tests",

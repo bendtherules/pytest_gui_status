@@ -40,7 +40,6 @@ command_status_gui_gen = "pytest_gui_status \"{norm_dir_name}\""
 # make bulk changes with pipeline
 
 
-
 class Helpers(object):
 
     @staticmethod
