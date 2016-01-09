@@ -31,7 +31,7 @@ Done
 11. (---) Use travis ci + install redis there
 12. (---) Show gui only with option --status_gui
 13. (---) env config for redis + test for that
-14. (---) Use redis_db fixture for travis debugging (---)
+14. (---) Use redis_db fixture for travis debuggings
 
 
 Think

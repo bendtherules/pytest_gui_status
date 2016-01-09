@@ -7,23 +7,7 @@ import os
 import psutil
 import datetime
 from ..utils import s
-
-
-env_redis_port = os.environ.get("PYTEST_STATUS_PORT")
-if env_redis_port:
-    REDIS_PORT = int(env_redis_port)
-else:
-    REDIS_PORT = 5946
-
-REDIS_PATH = os.environ.get("REDIS_PATH") or "redis-server"
-REDIS_ARGS = os.environ.get("REDIS_ARGS") or ""
-
-command_redis_server_gen = "{REDIS_PATH} --port {REDIS_PORT} {REDIS_ARGS}"
-command_redis_server = command_redis_server_gen.format(REDIS_PATH=REDIS_PATH,
-                                                       REDIS_ARGS=REDIS_ARGS,
-                                                       REDIS_PORT=REDIS_PORT)
-
-command_status_gui_gen = "pytest_gui_status \"{norm_dir_name}\""
+from ..utils import REDIS_PORT, command_redis_server, command_status_gui_gen
 
 # Redis will look like:
 # PYTEST_STATUS_DB = 1

@@ -7,13 +7,7 @@ from datetime import datetime
 import humanfriendly
 import os.path
 from ..utils import s
-
-
-env_redis_port = os.environ.get("PYTEST_STATUS_PORT")
-if env_redis_port:
-    REDIS_PORT = int(env_redis_port)
-else:
-    REDIS_PORT = 5946
+from ..utils import REDIS_PORT
 
 
 class Controller(htmlPy.Object):

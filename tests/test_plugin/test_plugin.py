@@ -93,7 +93,11 @@ def test_env_redis_1():
     '''
 
     import pytest_gui_status.status_plugin.plugin
-    reload_2_3(pytest_gui_status.status_plugin.plugin)
+    import pytest_gui_status.utils
 
-    redis_cmd_final = pytest_gui_status.status_plugin.plugin.command_redis_server
+    reload_2_3(pytest_gui_status.utils)
+    reload_2_3(pytest_gui_status.status_plugin.plugin)
+    reload_2_3(status_plugin)
+
+    redis_cmd_final = status_plugin.command_redis_server
     assert(redis_cmd_final == "test_redis --port 1234 --test_arg = test_val")
