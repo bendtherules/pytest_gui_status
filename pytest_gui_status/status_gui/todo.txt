@@ -3,7 +3,7 @@ Todo
 
 1. Test gui_backend state loading from redis code
 
-2 Tests with setup/teardown/class when needed*
+2 Tests with setup/teardown/class when needed
 3 Faster Tests wiith timeout, if required by extra api to params
 4. Allow config for template
 5. Add cli doc for --show_status_gui
