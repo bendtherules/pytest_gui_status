@@ -41,121 +41,112 @@ def redis_master(request, auto_shutdown=True):
 @patch.dict("os.environ",
             {"PYTEST_STATUS_PORT": str(REDIS_TEST_PORT)})
 @patch.dict("sys.modules", {"htmlPy": mock_htmlPy_module})
-def test_redis_fail_1(tmpdir):
-    # load new redis port
-    import pytest_gui_status.status_gui.gui_backend as gui_backend
-    reload_2_3(pytest_gui_status.utils)
-    reload_2_3(gui_backend)
-    reload_2_3(status_plugin)
+class TestRedisFail(object):
+    """test that appropriate errors are raised when redis is in incorrect state / shutdown"""
 
-    # dont start redis. Also if redis running, stop it
-    redis_db = redis.StrictRedis(host='localhost', port=REDIS_TEST_PORT, db=0)
-    try:
-        assert redis_db.ping()
-        redis_db.shutdown()
-    except redis.exceptions.ConnectionError:
-        pass
-    except AssertionError:
-        pass
+    def test_redis_fail_1(self, tmpdir):
+        # load new redis port
+        import pytest_gui_status.status_gui.gui_backend as gui_backend
+        reload_2_3(pytest_gui_status.utils)
+        reload_2_3(gui_backend)
+        reload_2_3(status_plugin)
 
-    # mock Controller requirements and app_gui.stop
-    fake_app_gui = MagicMock()
-    with pytest.raises(redis.exceptions.ConnectionError) as error_info:
-        gui_backend.Controller(fake_app_gui).redraw()
+        # dont start redis. Also if redis running, stop it
+        redis_db = redis.StrictRedis(host='localhost', port=REDIS_TEST_PORT, db=0)
+        try:
+            assert redis_db.ping()
+            redis_db.shutdown()
+        except redis.exceptions.ConnectionError:
+            pass
+        except AssertionError:
+            pass
 
-    assert str(error_info.value) == "Cant connect to this socket. Is redis running?\n" \
-        + "Stopping pytest_status_gui"
+        # mock Controller requirements and app_gui.stop
+        fake_app_gui = MagicMock()
+        with pytest.raises(redis.exceptions.ConnectionError) as error_info:
+            gui_backend.Controller(fake_app_gui).redraw()
 
+        assert str(error_info.value) == "Cant connect to this socket. Is redis running?\n" \
+            + "Stopping pytest_status_gui"
 
-@patch.dict("os.environ",
-            {"PYTEST_STATUS_PORT": str(REDIS_TEST_PORT)})
-@patch.dict("sys.modules", {"htmlPy": mock_htmlPy_module})
-def test_redis_fail_2(tmpdir, redis_master):
-    # load new redis port
-    import pytest_gui_status.status_gui.gui_backend as gui_backend
-    reload_2_3(pytest_gui_status.utils)
-    reload_2_3(gui_backend)
-    reload_2_3(status_plugin)
+    def test_redis_fail_2(self, tmpdir, redis_master):
+        # load new redis port
+        import pytest_gui_status.status_gui.gui_backend as gui_backend
+        reload_2_3(pytest_gui_status.utils)
+        reload_2_3(gui_backend)
+        reload_2_3(status_plugin)
 
-    # start Redis
-    redis_master.init(tmpdir.strpath)
+        # start Redis
+        redis_master.init(tmpdir.strpath)
 
-    # status_plugin.Helpers.on_start(tmpdir.strpath)
+        # status_plugin.Helpers.on_start(tmpdir.strpath)
 
-    # make PYTEST_STATUS_DB value corrupt/incorrect
-    redis_db = redis.StrictRedis(host='localhost', port=REDIS_TEST_PORT, db=0)
-    redis_db.set("PYTEST_STATUS_DB", "0")
+        # make PYTEST_STATUS_DB value corrupt/incorrect
+        redis_db = redis.StrictRedis(host='localhost', port=REDIS_TEST_PORT, db=0)
+        redis_db.set("PYTEST_STATUS_DB", "0")
 
-    # mock Controller requirements and app_gui.stop
-    fake_app_gui = MagicMock()
-    with pytest.raises(redis.exceptions.ConnectionError) as error_info:
-        gui_backend.Controller(fake_app_gui).redraw()
+        # mock Controller requirements and app_gui.stop
+        fake_app_gui = MagicMock()
+        with pytest.raises(redis.exceptions.ConnectionError) as error_info:
+            gui_backend.Controller(fake_app_gui).redraw()
 
-    assert str(error_info.value) == "Redis is running on this port, but it is not related to pytest status\n"\
-        + "Stopping pytest_status_gui"
+        assert str(error_info.value) == "Redis is running on this port, but it is not related to pytest status\n"\
+            + "Stopping pytest_status_gui"
 
-    fake_app_gui.stop.assert_called_with()
+        fake_app_gui.stop.assert_called_with()
 
-    # auto cleanup of redis master by fixture
+        # auto cleanup of redis master by fixture
 
+    def test_redis_fail_3(self, tmpdir, redis_master):
+        # load new redis port
+        import pytest_gui_status.status_gui.gui_backend as gui_backend
+        reload_2_3(pytest_gui_status.utils)
+        reload_2_3(gui_backend)
+        reload_2_3(status_plugin)
 
-@patch.dict("os.environ",
-            {"PYTEST_STATUS_PORT": str(REDIS_TEST_PORT)})
-@patch.dict("sys.modules", {"htmlPy": mock_htmlPy_module})
-def test_redis_fail_3(tmpdir, redis_master):
-    # load new redis port
-    import pytest_gui_status.status_gui.gui_backend as gui_backend
-    reload_2_3(pytest_gui_status.utils)
-    reload_2_3(gui_backend)
-    reload_2_3(status_plugin)
+        # start Redis
+        redis_master.init(tmpdir.strpath)
 
-    # start Redis
-    redis_master.init(tmpdir.strpath)
+        # delete PYTEST_STATUS_DB
+        redis_db = redis.StrictRedis(host='localhost', port=REDIS_TEST_PORT, db=0)
+        redis_db.delete("PYTEST_STATUS_DB")
 
-    # delete PYTEST_STATUS_DB
-    redis_db = redis.StrictRedis(host='localhost', port=REDIS_TEST_PORT, db=0)
-    redis_db.delete("PYTEST_STATUS_DB")
+        # mock Controller requirements and app_gui.stop
+        fake_app_gui = MagicMock()
 
-    # mock Controller requirements and app_gui.stop
-    fake_app_gui = MagicMock()
+        with pytest.raises(redis.exceptions.ConnectionError) as error_info:
+            gui_backend.Controller(fake_app_gui).redraw()
 
-    with pytest.raises(redis.exceptions.ConnectionError) as error_info:
-        gui_backend.Controller(fake_app_gui).redraw()
+        assert str(error_info.value) == "Redis is running on this port, but it is not related to pytest status\n"\
+            + "Stopping pytest_status_gui"
 
-    assert str(error_info.value) == "Redis is running on this port, but it is not related to pytest status\n"\
-        + "Stopping pytest_status_gui"
+        fake_app_gui.stop.assert_called_with()
 
-    fake_app_gui.stop.assert_called_with()
+        # auto cleanup of redis master by fixture
 
-    # auto cleanup of redis master by fixture
+    def test_redis_fail_4(self, tmpdir, redis_master):
+        # load new redis port
+        import pytest_gui_status.status_gui.gui_backend as gui_backend
+        reload_2_3(pytest_gui_status.utils)
+        reload_2_3(gui_backend)
+        reload_2_3(status_plugin)
 
+        # start Redis
+        redis_master.init(tmpdir.strpath)
 
-@patch.dict("os.environ",
-            {"PYTEST_STATUS_PORT": str(REDIS_TEST_PORT)})
-@patch.dict("sys.modules", {"htmlPy": mock_htmlPy_module})
-def test_redis_fail_4(tmpdir, redis_master):
-    # load new redis port
-    import pytest_gui_status.status_gui.gui_backend as gui_backend
-    reload_2_3(pytest_gui_status.utils)
-    reload_2_3(gui_backend)
-    reload_2_3(status_plugin)
+        # redis_db = redis.StrictRedis(host='localhost', port=REDIS_TEST_PORT, db=0)
 
-    # start Redis
-    redis_master.init(tmpdir.strpath)
+        # mock Controller requirements and app_gui.stop
+        # provide invalid path
+        fake_app_gui = MagicMock()
+        fake_app_gui.dir_name = r"Invalid/Path"
 
-    # redis_db = redis.StrictRedis(host='localhost', port=REDIS_TEST_PORT, db=0)
+        with pytest.raises(redis.exceptions.ConnectionError) as error_info:
+            gui_backend.Controller(fake_app_gui).redraw()
 
-    # mock Controller requirements and app_gui.stop
-    # provide invalid path
-    fake_app_gui = MagicMock()
-    fake_app_gui.dir_name = r"Invalid/Path"
+        assert str(error_info.value) == "dir_name = {dir_name} not found in redis db".format(
+            dir_name=fake_app_gui.dir_name)
 
-    with pytest.raises(redis.exceptions.ConnectionError) as error_info:
-        gui_backend.Controller(fake_app_gui).redraw()
+        fake_app_gui.stop.assert_called_with()
 
-    assert str(error_info.value) == "dir_name = {dir_name} not found in redis db".format(
-        dir_name=fake_app_gui.dir_name)
-
-    fake_app_gui.stop.assert_called_with()
-
-    # auto cleanup of redis master by fixture
+        # auto cleanup of redis master by fixture
