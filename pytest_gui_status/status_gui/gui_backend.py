@@ -50,7 +50,7 @@ class Controller(htmlPy.Object):
                                                    "Stopping pytest_status_gui")
 
         dir_name = self.app_gui.dir_name
-        hash_dir_name = redis_db.hget("directories_to_hash", dir_name)
+        hash_dir_name = s(redis_db.hget("directories_to_hash", dir_name))
 
         if hash_dir_name is None:
             self.app_gui.stop()
@@ -61,9 +61,9 @@ class Controller(htmlPy.Object):
         dict_state["dir_name"] = dir_name
         dict_state["dir_name_topfolder"] = os.path.basename(dir_name)
 
-        dict_state["state"] = redis_db.get("{hash_a}_state".format(hash_a=hash_dir_name))
+        dict_state["state"] = s(redis_db.get("{hash_a}_state".format(hash_a=hash_dir_name)))
         dict_state["state_desc"] = self.dict_state_desc[dict_state["state"]]
-        dict_state["last_updated"] = redis_db.get("{hash_a}_last_updated".format(hash_a=hash_dir_name))
+        dict_state["last_updated"] = s(redis_db.get("{hash_a}_last_updated".format(hash_a=hash_dir_name)))
 
         dict_state["last_updated_obj"] = dateutil.parser.parse(dict_state["last_updated"])
         last_updated_rel = (datetime.now() - dict_state["last_updated_obj"]).seconds  # in seconds
@@ -72,10 +72,10 @@ class Controller(htmlPy.Object):
             last_updated_rel = last_updated_rel - (last_updated_rel % 60)
         dict_state["last_updated_friendly"] = humanfriendly.format_timespan(last_updated_rel)
 
-        dict_state["collect"] = redis_db.lrange("{hash_a}_collect".format(hash_a=hash_dir_name), 0, -1)
-        dict_state["pass"] = redis_db.lrange("{hash_a}_pass".format(hash_a=hash_dir_name), 0, -1)
-        dict_state["fail"] = redis_db.lrange("{hash_a}_fail".format(hash_a=hash_dir_name), 0, -1)
-        dict_state["skip"] = redis_db.lrange("{hash_a}_skip".format(hash_a=hash_dir_name), 0, -1)
+        dict_state["collect"] = s(redis_db.lrange("{hash_a}_collect".format(hash_a=hash_dir_name), 0, -1))
+        dict_state["pass"] = s(redis_db.lrange("{hash_a}_pass".format(hash_a=hash_dir_name), 0, -1))
+        dict_state["fail"] = s(redis_db.lrange("{hash_a}_fail".format(hash_a=hash_dir_name), 0, -1))
+        dict_state["skip"] = s(redis_db.lrange("{hash_a}_skip".format(hash_a=hash_dir_name), 0, -1))
 
         if (not self.last_state) or (self.last_state != dict_state):
             self.app_gui.html = render_template(self.app_gui, "index.html", dict_state)
