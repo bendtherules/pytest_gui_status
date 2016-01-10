@@ -6,6 +6,7 @@ from mock import patch, MagicMock
 import redis
 import pytest
 import os.path
+import datetime
 
 from ..utils_test import reload_2_3
 
@@ -173,6 +174,7 @@ class TestBackendState(object):
 
         # setup state
         status_plugin.Helpers.on_collectstart(tmpdir.strpath)
+        status_plugin.Helpers.on_collectend(tmpdir.strpath, ["collect_1", "collect_2"])
 
         # mock app_gui with path
         fake_app_gui = MagicMock()
@@ -185,3 +187,8 @@ class TestBackendState(object):
         assert tmp_controller.last_state["dir_name_topfolder"] ==\
             os.path.basename(tmpdir.strpath)
         assert tmp_controller.last_state["state"] == "collect"
+        assert tmp_controller.last_state["last_updated_obj"] <= datetime.datetime.now()
+        assert tmp_controller.last_state["collect"] == ["collect_1", "collect_2"]
+        assert tmp_controller.last_state["pass"] == []
+        assert tmp_controller.last_state["fail"] == []
+        assert tmp_controller.last_state["skip"] == []
