@@ -1,9 +1,12 @@
+import pytest_gui_status.status_gui.gui_backend as gui_backend
+import pytest_gui_status.status_gui.utils_gui as utils_gui
 import pytest_gui_status.status_plugin.plugin as status_plugin
 import pytest_gui_status.utils
 
 from mock import patch, MagicMock
 import redis
 import pytest
+import os.path
 
 from ..utils_test import reload_2_3
 
@@ -46,7 +49,6 @@ class TestRedisFail(object):
 
     def test_redis_fail_1(self, tmpdir):
         # load new redis port
-        import pytest_gui_status.status_gui.gui_backend as gui_backend
         reload_2_3(pytest_gui_status.utils)
         reload_2_3(gui_backend)
         reload_2_3(status_plugin)
@@ -71,7 +73,6 @@ class TestRedisFail(object):
 
     def test_redis_fail_2(self, tmpdir, redis_master):
         # load new redis port
-        import pytest_gui_status.status_gui.gui_backend as gui_backend
         reload_2_3(pytest_gui_status.utils)
         reload_2_3(gui_backend)
         reload_2_3(status_plugin)
@@ -99,7 +100,6 @@ class TestRedisFail(object):
 
     def test_redis_fail_3(self, tmpdir, redis_master):
         # load new redis port
-        import pytest_gui_status.status_gui.gui_backend as gui_backend
         reload_2_3(pytest_gui_status.utils)
         reload_2_3(gui_backend)
         reload_2_3(status_plugin)
@@ -126,7 +126,6 @@ class TestRedisFail(object):
 
     def test_redis_fail_4(self, tmpdir, redis_master):
         # load new redis port
-        import pytest_gui_status.status_gui.gui_backend as gui_backend
         reload_2_3(pytest_gui_status.utils)
         reload_2_3(gui_backend)
         reload_2_3(status_plugin)
@@ -150,3 +149,35 @@ class TestRedisFail(object):
         fake_app_gui.stop.assert_called_with()
 
         # auto cleanup of redis master by fixture
+
+
+@patch.dict("os.environ",
+            {"PYTEST_STATUS_PORT": str(REDIS_TEST_PORT)})
+@patch.dict("sys.modules", {"htmlPy": mock_htmlPy_module})
+class TestBackendState(object):
+    """docstring for TestBackendState"""
+
+    @patch("pytest_gui_status.status_gui.utils_gui.render_template", MagicMock())
+    def test_backend_state_1(self, tmpdir, redis_master):
+        # load new redis port
+        reload_2_3(pytest_gui_status.utils)
+        reload_2_3(gui_backend)
+        reload_2_3(status_plugin)
+
+        # start Redis
+        redis_master.init(tmpdir.strpath)
+
+        # setup state
+        status_plugin.Helpers.on_collectstart(tmpdir.strpath)
+
+        # mock app_gui with path
+        fake_app_gui = MagicMock()
+        fake_app_gui.dir_name = tmpdir.strpath
+
+        tmp_controller = gui_backend.Controller(fake_app_gui)
+        tmp_controller.redraw()
+
+        assert tmp_controller.last_state["dir_name"] == tmpdir.strpath
+        assert tmp_controller.last_state["dir_name_topfolder"] ==\
+            os.path.basename(tmpdir.strpath)
+        assert tmp_controller.last_state["state"] == "collect"
