@@ -1,4 +1,3 @@
-import pytest_gui_status.status_gui.gui_backend as gui_backend
 import pytest_gui_status.status_gui.utils_gui as utils_gui
 import pytest_gui_status.status_plugin.plugin as status_plugin
 import pytest_gui_status.utils
@@ -49,6 +48,7 @@ class TestRedisFail(object):
 
     def test_redis_fail_1(self, tmpdir):
         # load new redis port
+        import pytest_gui_status.status_gui.gui_backend as gui_backend
         reload_2_3(pytest_gui_status.utils)
         reload_2_3(gui_backend)
         reload_2_3(status_plugin)
@@ -73,6 +73,7 @@ class TestRedisFail(object):
 
     def test_redis_fail_2(self, tmpdir, redis_master):
         # load new redis port
+        import pytest_gui_status.status_gui.gui_backend as gui_backend
         reload_2_3(pytest_gui_status.utils)
         reload_2_3(gui_backend)
         reload_2_3(status_plugin)
@@ -100,6 +101,7 @@ class TestRedisFail(object):
 
     def test_redis_fail_3(self, tmpdir, redis_master):
         # load new redis port
+        import pytest_gui_status.status_gui.gui_backend as gui_backend
         reload_2_3(pytest_gui_status.utils)
         reload_2_3(gui_backend)
         reload_2_3(status_plugin)
@@ -126,6 +128,7 @@ class TestRedisFail(object):
 
     def test_redis_fail_4(self, tmpdir, redis_master):
         # load new redis port
+        import pytest_gui_status.status_gui.gui_backend as gui_backend
         reload_2_3(pytest_gui_status.utils)
         reload_2_3(gui_backend)
         reload_2_3(status_plugin)
@@ -160,6 +163,7 @@ class TestBackendState(object):
     @patch("pytest_gui_status.status_gui.utils_gui.render_template", MagicMock())
     def test_backend_state_1(self, tmpdir, redis_master):
         # load new redis port
+        import pytest_gui_status.status_gui.gui_backend as gui_backend
         reload_2_3(pytest_gui_status.utils)
         reload_2_3(gui_backend)
         reload_2_3(status_plugin)
