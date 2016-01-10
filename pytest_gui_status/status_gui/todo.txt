@@ -1,19 +1,18 @@
 Todo
 ------
 
-1. Test gui_backend state loading from redis code
+1. Test on Appveyor - install redis via chocolatey
+2. Release on pypi
+3. Add well-explained readme
+4. use logging.debug / log file for more prints
 
-2 Tests with setup/teardown/class when needed
-3 Faster Tests wiith timeout, if required by extra api to params
-4. Allow config for template
-5. Add cli doc for --show_status_gui
-6. Add well-explained readme
-7. use logging.debug / log file for more prints
-8. Add gui tests
-9. Use config.pluginmanager.hasplugin('plugin_name') when needed
-10. Release on pypi
-11. Test on Appveyor - install redis via chocolatey
-12. Give icon to gui + preferably dynamic with status
+5. Tests with setup/teardown/class when needed
+6. Faster Tests wiith timeout, if required by extra api to params
+7. Allow config for template
+8. Add cli doc for --show_status_gui
+9. Add gui tests
+10. Use config.pluginmanager.hasplugin('plugin_name') when needed
+11. Give icon to gui + preferably dynamic with status
 
 
 Done
@@ -32,6 +31,7 @@ Done
 13. (---) env config for redis + test for that
 14. (---) Use redis_db fixture for travis debuggings
 15. (---) Add redis sudden fail tests - shutdown or crash after startup\
+16. (---) Test gui_backend state loading from redis code
 
 Think
 -------
