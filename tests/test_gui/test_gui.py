@@ -17,6 +17,13 @@ mock_htmlPy_module.Object = object
 mock_htmlPy_module.Slot.return_value = (lambda func: func)
 
 
+class MockTestResult(object):
+    def __init__(self, nodeid, outcome):
+        assert outcome in ["passed", "failed", "skipped"]
+        self.nodeid = nodeid
+        self.outcome = outcome
+
+
 @pytest.fixture()
 def redis_master(request, auto_shutdown=True):
     import pytest_gui_status.status_plugin.plugin as status_plugin
@@ -192,3 +199,42 @@ class TestBackendState(object):
         assert tmp_controller.last_state["pass"] == []
         assert tmp_controller.last_state["fail"] == []
         assert tmp_controller.last_state["skip"] == []
+
+    @patch("pytest_gui_status.status_gui.utils_gui.render_template", MagicMock())
+    def test_backend_state_2(self, tmpdir, redis_master):
+        # load new redis port
+        import pytest_gui_status.status_gui.gui_backend as gui_backend
+        reload_2_3(pytest_gui_status.utils)
+        reload_2_3(gui_backend)
+        reload_2_3(status_plugin)
+
+        # start Redis
+        redis_master.init(tmpdir.strpath)
+
+        # setup state
+        status_plugin.Helpers.on_collectstart(tmpdir.strpath)
+        status_plugin.Helpers.on_collectend(tmpdir.strpath, [])
+        status_plugin.Helpers.on_test_eachstart(tmpdir.strpath)
+        status_plugin.Helpers.on_test_eachend(tmpdir.strpath, [
+            MockTestResult("pass_1", "passed"),
+            MockTestResult("fail_1", "failed"),
+            MockTestResult("pass_2", "passed"),
+            MockTestResult("skip_1", "skipped"),
+        ])
+
+        # mock app_gui with path
+        fake_app_gui = MagicMock()
+        fake_app_gui.dir_name = tmpdir.strpath
+
+        tmp_controller = gui_backend.Controller(fake_app_gui)
+        tmp_controller.redraw()
+
+        assert tmp_controller.last_state["dir_name"] == tmpdir.strpath
+        assert tmp_controller.last_state["dir_name_topfolder"] ==\
+            os.path.basename(tmpdir.strpath)
+        assert tmp_controller.last_state["state"] == "runtest"
+        assert tmp_controller.last_state["last_updated_obj"] <= datetime.datetime.now()
+        assert tmp_controller.last_state["collect"] == []
+        assert sorted(tmp_controller.last_state["pass"]) == sorted(["pass_1", "pass_2"])
+        assert tmp_controller.last_state["fail"] == ["fail_1"]
+        assert tmp_controller.last_state["skip"] == ["skip_1"]

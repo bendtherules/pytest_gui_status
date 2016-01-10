@@ -111,7 +111,8 @@ class Helpers(object):
         hash_dir_name = s(redis_db.hget("directories_to_hash", dir_name))
         assert hash_dir_name is not None
 
-        redis_db.rpush("{hash_a}_collect".format(hash_a=hash_dir_name), *list_test_name)
+        if list_test_name:
+            redis_db.rpush("{hash_a}_collect".format(hash_a=hash_dir_name), *list_test_name)
 
         # set last updated
         Helpers.modify_last_updated(dir_name)
