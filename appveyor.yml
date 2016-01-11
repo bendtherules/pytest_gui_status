@@ -14,32 +14,26 @@ environment:
     - PYTHON: "C:\\Python27"
       PYTHON_VERSION: "2.7.x" # currently 2.7.9
       PYTHON_ARCH: "32"
-      TOXENV: "py27,lib,coverage"
 
     - PYTHON: "C:\\Python27-x64"
       PYTHON_VERSION: "2.7.x" # currently 2.7.9
       PYTHON_ARCH: "64"
-      TOXENV: "py27,lib,coverage"
 
     - PYTHON: "C:\\Python33"
       PYTHON_VERSION: "3.3.x" # currently 3.3.5
       PYTHON_ARCH: "32"
-      TOXENV: "py33,lib,coverage"
 
     - PYTHON: "C:\\Python33-x64"
       PYTHON_VERSION: "3.3.x" # currently 3.3.5
       PYTHON_ARCH: "64"
-      TOXENV: "py33,lib,coverage"
 
     - PYTHON: "C:\\Python34"
       PYTHON_VERSION: "3.4.x" # currently 3.4.3
       PYTHON_ARCH: "32"
-      TOXENV: "py34,lib,coverage"
 
     - PYTHON: "C:\\Python34-x64"
       PYTHON_VERSION: "3.4.x" # currently 3.4.3
       PYTHON_ARCH: "64"
-      TOXENV: "py34,lib,coverage"
 
     # Python versions not pre-installed
 
@@ -49,12 +43,10 @@ environment:
     - PYTHON: "C:\\Python266"
       PYTHON_VERSION: "2.6.6"
       PYTHON_ARCH: "32"
-      TOXENV: "py26,lib,coverage"
 
     - PYTHON: "C:\\Python266-x64"
       PYTHON_VERSION: "2.6.6"
       PYTHON_ARCH: "64"
-      TOXENV: "py26,lib,coverage"
 
 install:
   - ECHO "Filesystem root:"
