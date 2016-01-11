@@ -86,7 +86,7 @@ build: off
 
 test_script:
   # Run the project tests
-  - py.test -v
+  - py.test
 
 # after_test:
 #   # If tests are successful, create binary packages for the project.
