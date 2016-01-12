@@ -79,14 +79,14 @@ install:
   # Install the build dependencies of the project.
   - "pip install --upgrade -r requirements.txt"
   # Install self for tests
-  - "pip install -e .""
+  - "pip install -e ."
 
 
 build: off
 
 test_script:
   # Run the project tests
-  - ps: "py.test"
+  - ps: "py.test -v"
 
 # after_test:
 #   # If tests are successful, create binary packages for the project.
