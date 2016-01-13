@@ -12,13 +12,14 @@ cache:
 
 
 matrix:
-  # include py35
+  # add py35 and nightly
   include:
     - env: TOXENV=py35
       python: "3.5"
     - env: TOXENV=py
       python: "nightly"
 env:
+  # major versions first
   - TOXENV=py27
   - TOXENV=py34
   # - TOXENV=py35
