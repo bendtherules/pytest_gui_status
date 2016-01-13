@@ -11,4 +11,4 @@ dependencies:
 
 test:
   override:
-    - tox -e circleci_27 circleci_34 circleci_35 circleci_pypy
+    - tox -e circleci_27,circleci_34,circleci_35,circleci_pypy
