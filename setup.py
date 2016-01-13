@@ -22,6 +22,8 @@ setup(
     package_dir=package_dir,
     license='MIT',
     platforms='any',
+    package_data={'': ['requirements.txt']},
+    include_package_data=True,
     install_requires=open('requirements.txt').readlines(),
     entry_points={
         'pytest11': [
