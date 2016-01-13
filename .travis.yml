@@ -1,3 +1,4 @@
+sudo: false
 language: python
 
 addons:
@@ -5,22 +6,25 @@ addons:
     packages:
     - redis-server
 
-  env:
-    matrix:
-      # major versions, test first
-      - TOXENV=py27
-      - TOXENV=py35
-      # other versions
-      - TOXENV=py26
-      - TOXENV=py33
-      - TOXENV=py34
-      - TOXENV=py35
-      - TOXENV=pypy
-      - TOXENV=pypy3
-      # not included, for incompatibility
-      # - "2.5" # tarvis errs
-      # - "3.2" # humanfriendly cant install
-      # - "pypy3" # psutil errs
+env:
+  matrix:
+    # major versions, test first
+    - TOXENV=py27
+    - TOXENV=py35
+    # other versions
+    - TOXENV=py26
+    - TOXENV=py33
+    - TOXENV=py34
+    - TOXENV=py35
+    - TOXENV=pypy
+    - TOXENV=pypy3
+    # not included, for incompatibility
+    # - "2.5" # tarvis errs
+    # - "3.2" # humanfriendly cant install
+    # - "pypy3" # psutil errs
+
+install:
+  - pip install tox
 
 # command to run tests
 script: tox
