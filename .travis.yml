@@ -6,22 +6,24 @@ addons:
     packages:
     - redis-server
 
+matrix:
+  # major versions, test first
+  include:
+    - env: TOXENV=py27
+    - env: TOXENV=py35-dev
+      python: "3.5-dev"
 env:
-  matrix:
-    # major versions, test first
-    - TOXENV=py27
-    - TOXENV=py35
-    # other versions
-    - TOXENV=py26
-    - TOXENV=py33
-    - TOXENV=py34
-    - TOXENV=py35
-    - TOXENV=pypy
-    - TOXENV=pypy3
-    # not included, for incompatibility
-    # - "2.5" # tarvis errs
-    # - "3.2" # humanfriendly cant install
-    # - "pypy3" # psutil errs
+  # - TOXENV=py27
+  # - TOXENV=py35-dev
+  # other versions
+  - TOXENV=py26
+  - TOXENV=py33
+  - TOXENV=py34
+  - TOXENV=pypy
+  # not included, for incompatibility
+  # - "2.5" # tarvis errs
+  # - "3.2" # humanfriendly cant install
+  # - "pypy3" # psutil errs
 
 install:
   - pip install tox
