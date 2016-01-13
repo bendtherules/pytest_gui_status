@@ -12,6 +12,6 @@ dependencies:
 test:
   pre:
     - pyenv versions
-    - pyenv global 2.7.10 3.4.3 3.5 pypy-2.5.0
+    - pyenv global 2.7.10 3.3.3 3.4.3 3.5.0 pypy-2.5.0
   override:
-    - tox -e circleci_27,circleci_34,circleci_35,circleci_pypy
+    - tox
