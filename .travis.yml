@@ -5,6 +5,11 @@ addons:
   apt:
     packages:
     - redis-server
+cache:
+  directories:
+    - $HOME/.cache/pip
+    - $TRAVIS_BUILD_DIR/.tox
+
 
 matrix:
   # include py35
