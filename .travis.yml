@@ -6,15 +6,14 @@ addons:
     packages:
     - redis-server
 
-matrix:
-  # major versions, test first
-  include:
-    - env: TOXENV=py27
-    - env: TOXENV=py35-dev
-      python: "3.5-dev"
+# matrix:
+#   # major versions, test first
+#   include:
+#     - env: TOXENV=py35
+#       python: "3.5"
 env:
-  # - TOXENV=py27
-  # - TOXENV=py35-dev
+  - TOXENV=py27
+  - TOXENV=py35
   # other versions
   - TOXENV=py26
   - TOXENV=py33
