@@ -7,5 +7,4 @@ python-dateutil
 humanfriendly
 psutil
 setuptools
-funcsigs
 mock

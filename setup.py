@@ -2,13 +2,13 @@ from setuptools import setup
 
 packages = [
     "pytest_gui_status",
-    # 'pytest_gui_status.plugin',
-    # 'pytest_gui_status.gui',
+    'pytest_gui_status.status_plugin',
+    'pytest_gui_status.status_gui',
 ]
 package_dir = {
     'pytest_gui_status': 'pytest_gui_status',
-    # 'pytest_gui_status.plugin': 'status_plugin',
-    # 'pytest_gui_status.gui': 'status_gui',
+    # 'pytest_gui_status.status_plugin': 'status_plugin',
+    # 'pytest_gui_status.status_gui': 'status_gui',
 }
 
 setup(

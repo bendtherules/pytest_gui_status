@@ -1,7 +1,8 @@
 Todo
 ------
 
-1. Test on Appveyor - install redis via chocolatey
+1. Test on Appveyor - python 2.x builds don't stop - use tox
+1.1. Use tox for wrapping around py.test
 2. Release on pypi
 3. Add well-explained readme
 4. use logging.debug / log file for more prints
