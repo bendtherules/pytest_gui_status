@@ -14,4 +14,4 @@ test:
     - pyenv versions
     - pyenv global 2.7.10 3.3.3 3.4.3 3.5.0 pypy-2.5.0
   override:
-    - tox
+    - tox -- --junitxml=$CIRCLE_TEST_REPORTS
