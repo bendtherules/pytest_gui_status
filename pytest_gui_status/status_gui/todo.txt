@@ -31,8 +31,9 @@ Done
 12. (---) Show gui only with option --status_gui
 13. (---) env config for redis + test for that
 14. (---) Use redis_db fixture for travis debuggings
-15. (---) Add redis sudden fail tests - shutdown or crash after startup\
+15. (---) Add redis sudden fail tests - shutdown or crash after startup
 16. (---) Test gui_backend state loading from redis code
+17. (---) Test on Appveyor + Circle CI
 
 Think
 -------
