@@ -1,14 +1,14 @@
 Pytest Status GUI
 ------------------
 
-## Always on GUI for showing test status (only works with pytest)
+### Always on GUI for showing test status (only works with pytest)
 
 `pip install pytest_gui_status`
 
-## How to use?
+### How to use?
 `py.test --show_status_gui`
 
-## What is it?
+### What is it?
 
 pytest_status_gui is only a pytest plugin, which 
 
