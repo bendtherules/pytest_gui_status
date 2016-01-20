@@ -1,3 +1,3 @@
 PySide
   - On linux, sudo apt-get install python-pyside
-  - On Windows, install installers from their website
+  - On Windows, install with installers from their website
