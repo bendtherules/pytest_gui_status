@@ -1,5 +1,5 @@
 Pytest Status GUI
-------------------
+==================
 
 ### Always on GUI for showing test status (only works with pytest)
 
