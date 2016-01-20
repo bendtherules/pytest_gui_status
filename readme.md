@@ -1,7 +1,7 @@
 Pytest Status GUI
 ==================
 
-### Always on GUI for showing test status (only works with pytest)
+### => Always on GUI for showing test status (with pytest) 
 
 `pip install pytest_gui_status`
 
