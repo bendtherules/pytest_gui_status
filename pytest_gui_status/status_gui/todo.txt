@@ -5,15 +5,15 @@ Todo
 1.1. Use tox for wrapping around py.test
 2. Release on pypi
 3. Add well-explained readme
+3.1. Add cli doc for --show_status_gui
 4. use logging.debug / log file for more prints
 
 5. Tests with setup/teardown/class when needed
-6. Faster Tests wiith timeout, if required by extra api to params
+6. Faster Tests with timeout, if required by extra api to params
 7. Allow config for template
-8. Add cli doc for --show_status_gui
-9. Add gui tests
-10. Use config.pluginmanager.hasplugin('plugin_name') when needed
-11. Give icon to gui + preferably dynamic with status
+8. Add gui tests
+9. Use config.pluginmanager.hasplugin('plugin_name') when needed
+10. Give icon to gui + preferably dynamic with status
 
 
 Done
