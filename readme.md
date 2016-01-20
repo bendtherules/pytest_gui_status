@@ -1,11 +1,12 @@
 Pytest Status GUI
 ==================
 
-### => Always on GUI for showing test status (with pytest) 
-
 | Travis CI     | Appveyor (skipped 2.x)      | Circle CI |
 | ------------- | ------------- | --------- |
 |  [![Travis Build][Travis_SVG_Link]][Travis_Project_Page] | [![Appveyor Build][Appveyor_SVG_Link]][Appveyor_Project_Page] | [![CircleCI Build][CircleCI_SVG_Link]][CircleCI_Project_Page] |
+
+### => Always on GUI for showing test status (with pytest) 
+
 
  `pip install pytest_gui_status`
 
