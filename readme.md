@@ -21,7 +21,7 @@ pytest_status_gui is only a pytest plugin, which
 - updates the db with test run status (step running currently, for eg "Collecting Tests") and some details of the steps (like no. of tests passed) as it becomes available to the plugin.
 - The GUI on the other hand periodically polls data (using js timer with 1 sec interval) from the db and updates itself.
 
-It is **recommended for use with pytest-watch** which re-runs py.test on any change to your code. Run using `ptw -- --show_status_gui`
+It is **recommended for use with [pytest-watch][ptw_gh_link]** which re-runs py.test on any change to your code. Run using `ptw -- --show_status_gui`
 
 The result is that you get some nifty **test status windows that update as you keep editing files**. It is inspired from **[pytddmon](http://pytddmon.org/?page_id=33)**.
 
@@ -33,3 +33,5 @@ The result is that you get some nifty **test status windows that update as you k
 [Appveyor_Project_Page]:https://ci.appveyor.com/project/bendtherules/pytest-gui-status
 [CircleCI_Project_Page]:https://circleci.com/gh/bendtherules/pytest_gui_status
 [Travis_Project_Page]: https://travis-ci.org/bendtherules/pytest_gui_status
+
+[ptw_gh_link]: https://github.com/joeyespo/pytest-watch
