@@ -11,6 +11,7 @@ Pytest Status GUI
 
 
  `pip install pytest_gui_status`
+
  Also, install `PySide` manually via apt-get or installers.
 
 ### How to use?
