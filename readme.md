@@ -11,6 +11,7 @@ Pytest Status GUI
 
 
  `pip install pytest_gui_status`
+ Also, install `PySide` manually via apt-get or installers.
 
 ### How to use?
 `py.test --show_status_gui`
@@ -39,6 +40,6 @@ The result is that you get some nifty **test status windows that update as you k
 [Travis_Project_Page]: https://travis-ci.org/bendtherules/pytest_gui_status
 
 [ptw_gh_link]: https://github.com/joeyespo/pytest-watch
-[demo_gif_link]:http://i.imgur.com/7LT1LYy.gif
+[demo_gif_link]:http://i.imgur.com/96X8AcP.gif
 [pytddmon_video_link]:http://pytddmon.org/?page_id=33
 
