@@ -57,16 +57,15 @@ The result is that you get some nifty **test status windows that update as you k
 
 #### Redis:
 ###### Custom Redis Command:
-
-//TODO
+Set ENV variable `PYTEST_STATUS_PORT`
 
 ###### Custom Redis Args:
+Set ENV variable `REDIS_PATH`
 
-//TODO
 
 ###### Custom Redis Port:
+Set ENV variable `REDIS_ARGS`
 
-//TODO
 
 
 
