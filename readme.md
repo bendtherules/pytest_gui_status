@@ -12,7 +12,7 @@ Pytest Status GUI
 #### Install
  `pip install pytest_gui_status`
 
- Also, install `PySide` manually via apt-get or installers.
+ Also, install `PySide` and `Redis` manually via apt-get or installers.
 
 #### How to use?
 `py.test --show_status_gui`
@@ -43,4 +43,30 @@ The result is that you get some nifty **test status windows that update as you k
 [ptw_gh_link]: https://github.com/joeyespo/pytest-watch
 [demo_gif_link]:http://i.imgur.com/96X8AcP.gif
 [pytddmon_video_link]:http://pytddmon.org/?page_id=33
+
+#### Configuration
+
+##### Template:
+###### Minimal Window:
+
+//TODO
+
+###### Use your own template:
+
+//TODO
+
+#### Redis:
+###### Custom Redis Command:
+
+//TODO
+
+###### Custom Redis Args:
+
+//TODO
+
+###### Custom Redis Port:
+
+//TODO
+
+
 
