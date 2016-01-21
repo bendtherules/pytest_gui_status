@@ -9,13 +9,19 @@ Pytest Status GUI
 
 ![In action][demo_gif_link]
 
-
+#### Install
  `pip install pytest_gui_status`
 
-### How to use?
+ Also, install `PySide` manually via apt-get or installers.
+
+#### How to use?
 `py.test --show_status_gui`
 
-### What is it?
+**Recommended** : Use with [pytest-watch][ptw_gh_link] using `ptw -- --show_status_gui`
+
+pytest-watch re-runs py.test on any change to your code
+
+#### What is it?
 
 pytest_status_gui is only a pytest plugin, which 
 
@@ -23,9 +29,7 @@ pytest_status_gui is only a pytest plugin, which
 - updates the db with test run status (step running currently, for eg "Collecting Tests") and some details of the steps (like no. of tests passed) as it becomes available to the plugin.
 - The GUI on the other hand periodically polls data (using js timer with 1 sec interval) from the db and updates itself.
 
-It is **recommended for use with [pytest-watch][ptw_gh_link]** which re-runs py.test on any change to your code. Run using `ptw -- --show_status_gui`
-
-The result is that you get some nifty **test status windows that update as you keep editing files**. It is inspired from **[pytddmon](http://pytddmon.org/?page_id=33)**.
+The result is that you get some nifty **test status windows that update as you keep editing files**. It is inspired from **[pytddmon][pytddmon_video_link]**, which is more minimailistic and supports only nosetests.
 
 
 [Travis_SVG_Link]: https://travis-ci.org/bendtherules/pytest_gui_status.svg?branch=master
@@ -37,4 +41,6 @@ The result is that you get some nifty **test status windows that update as you k
 [Travis_Project_Page]: https://travis-ci.org/bendtherules/pytest_gui_status
 
 [ptw_gh_link]: https://github.com/joeyespo/pytest-watch
-[demo_gif_link]:http://i.imgur.com/ReGMVpu.gif
+[demo_gif_link]:http://i.imgur.com/96X8AcP.gif
+[pytddmon_video_link]:http://pytddmon.org/?page_id=33
+
