@@ -9,19 +9,19 @@ Pytest Status GUI
 
 ![In action][demo_gif_link]
 
-
+#### Install
  `pip install pytest_gui_status`
 
  Also, install `PySide` manually via apt-get or installers.
 
-### How to use?
+#### How to use?
 `py.test --show_status_gui`
 
 **Recommended** : Use with [pytest-watch][ptw_gh_link] using `ptw -- --show_status_gui`
 
 pytest-watch re-runs py.test on any change to your code
 
-### What is it?
+#### What is it?
 
 pytest_status_gui is only a pytest plugin, which 
 
