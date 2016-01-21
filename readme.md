@@ -7,6 +7,8 @@ Pytest Status GUI
 
 ### => Always on GUI for showing test status (with pytest) 
 
+![In action][demo_gif_link]
+
 
  `pip install pytest_gui_status`
 
@@ -35,3 +37,4 @@ The result is that you get some nifty **test status windows that update as you k
 [Travis_Project_Page]: https://travis-ci.org/bendtherules/pytest_gui_status
 
 [ptw_gh_link]: https://github.com/joeyespo/pytest-watch
+[demo_gif_link]:http://i.imgur.com/ReGMVpu.gif
