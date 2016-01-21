@@ -55,7 +55,7 @@ The result is that you get some nifty **test status windows that update as you k
 
 //TODO
 
-#### Redis:
+##### Redis:
 ###### Custom Redis Command:
 Set ENV variable `REDIS_PATH`
 
