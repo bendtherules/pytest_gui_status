@@ -1,6 +1,12 @@
 machine:
   python:
-    version: 3.5.0
+    version:
+    - 2.7.10
+    - 3.5.0
+    - 3.3.3
+    - 3.4.3
+    - pypy-2.5.0
+
 
 dependencies:
   pre:
