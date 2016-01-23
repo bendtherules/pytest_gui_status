@@ -8,7 +8,6 @@ import humanfriendly
 import os.path
 from ..utils import s
 from ..utils import REDIS_PORT
-from PyQt4.QtGui import QApplication
 
 
 class Controller(htmlPy.Object):
