@@ -1,24 +1,38 @@
 import htmlPy
 import os
-import sys
-from PyQt4.QtGui import QApplication
+
 import PyQt4.QtCore as QtCore
+from PyQt4.QtGui import QApplication
+import argparse
 
 # Import back-end functionalities
 from gui_backend import Controller
 
 
 def main():
-    if len(sys.argv) > 1:
-        dir_name_raw = sys.argv[1]
-    else:
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument("--dir_name", help="root directory where py.test was executed")
+    arg_parser.add_argument("--minimal", help="use minimal template", action="store_true")
+    parsed_args = arg_parser.parse_args()
+
+    dir_name_raw = parsed_args.dir_name
+    if dir_name_raw is None:
         dir_name_raw = "."
     dir_name = os.path.abspath(dir_name_raw)
 
+    if parsed_args.minimal:
+        app_tmpl = "minimal"
+    else:
+        app_tmpl = "default"
+
     # GUI initializations
-    app = htmlPy.AppGUI(title=u"{dir_name} - Test Status".format(dir_name=dir_name),
-                        developer_mode=True, width=150, height=80)
-    app.window.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+    app = htmlPy.AppGUI(title=u"to_be_set_later",
+                        developer_mode=True, width=1, height=1)
+
+    app.window.setWindowFlags(QtCore.Qt.WindowTitleHint)
+    # app.window.setWindowFlags(app.window.windowFlags() & ~QtCore.Qt.WindowMaximizeButtonHint)
+    app.window.setWindowFlags(app.window.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+
     screen_geo = QApplication.desktop().availableGeometry()
     screen_topright = screen_geo.topRight()
     app.x_pos = (screen_topright.x() - 20) - app.width
@@ -29,8 +43,10 @@ def main():
     app.static_path = os.path.join(BASE_DIR, "static/")
     app.template_path = os.path.join(BASE_DIR, "tmpl/")
     app.dir_name = dir_name
+    app.tmpl_name = app_tmpl
 
     # Register back-end functionalities
+    # allow minimal tmpl with sys.arg
     app_backend = Controller(app)
     app.bind(app_backend)
 

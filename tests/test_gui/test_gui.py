@@ -73,6 +73,7 @@ class TestRedisFail(object):
 
         # mock Controller requirements and app_gui.stop
         fake_app_gui = MagicMock()
+        fake_app_gui.tmpl_name = "default"
         with pytest.raises(redis.exceptions.ConnectionError) as error_info:
             gui_backend.Controller(fake_app_gui).redraw()
 
@@ -97,6 +98,7 @@ class TestRedisFail(object):
 
         # mock Controller requirements and app_gui.stop
         fake_app_gui = MagicMock()
+        fake_app_gui.tmpl_name = "default"
         with pytest.raises(redis.exceptions.ConnectionError) as error_info:
             gui_backend.Controller(fake_app_gui).redraw()
 
@@ -123,6 +125,7 @@ class TestRedisFail(object):
 
         # mock Controller requirements and app_gui.stop
         fake_app_gui = MagicMock()
+        fake_app_gui.tmpl_name = "default"
 
         with pytest.raises(redis.exceptions.ConnectionError) as error_info:
             gui_backend.Controller(fake_app_gui).redraw()
@@ -149,6 +152,7 @@ class TestRedisFail(object):
         # mock Controller requirements and app_gui.stop
         # provide invalid path
         fake_app_gui = MagicMock()
+        fake_app_gui.tmpl_name = "default"
         fake_app_gui.dir_name = r"Invalid/Path"
 
         with pytest.raises(redis.exceptions.ConnectionError) as error_info:
@@ -185,6 +189,7 @@ class TestBackendState(object):
 
         # mock app_gui with path
         fake_app_gui = MagicMock()
+        fake_app_gui.tmpl_name = "default"
         fake_app_gui.dir_name = tmpdir.strpath
 
         tmp_controller = gui_backend.Controller(fake_app_gui)
@@ -224,6 +229,7 @@ class TestBackendState(object):
 
         # mock app_gui with path
         fake_app_gui = MagicMock()
+        fake_app_gui.tmpl_name = "default"
         fake_app_gui.dir_name = tmpdir.strpath
 
         tmp_controller = gui_backend.Controller(fake_app_gui)

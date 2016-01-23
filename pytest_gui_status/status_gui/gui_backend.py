@@ -8,6 +8,7 @@ import humanfriendly
 import os.path
 from ..utils import s
 from ..utils import REDIS_PORT
+from PyQt4.QtGui import QApplication
 
 
 class Controller(htmlPy.Object):
@@ -19,12 +20,30 @@ class Controller(htmlPy.Object):
         "end": "Finished Tests"
     }
 
+    dict_tmpl = {
+        "default": "index.html",
+        "minimal": "minimal.html",
+    }
+
+    dict_tmpl_size = {
+        "default": (150, 80),
+        "minimal": (50, 50)
+    }
+
     def __init__(self, app_gui):
         super(Controller, self).__init__()
         self.i = 0
         self.app_gui = app_gui
         self.last_state = None
-        # Initialize the class here, if required.
+
+        self.tmpl_name_full = self.dict_tmpl.get(self.app_gui.tmpl_name)
+        if self.tmpl_name_full is None:
+            raise TypeError("template name must be valid, one of these: {allowed_tmpl_names}".format(
+                allowed_tmpl_names=(", ".join(self.dict_tmpl.keys()))))
+
+        # set correct width, height
+        # self.app_gui.window.minimumWidth, self.app_gui.window.minimumHeight = (0, 0)
+        self.app_gui.width, self.app_gui.height = self.dict_tmpl_size.get(self.app_gui.tmpl_name)
 
     @htmlPy.Slot()
     def redraw(self):
@@ -78,6 +97,8 @@ class Controller(htmlPy.Object):
         dict_state["skip"] = s(redis_db.lrange("{hash_a}_skip".format(hash_a=hash_dir_name), 0, -1))
 
         if (not self.last_state) or (self.last_state != dict_state):
-            self.app_gui.html = render_template(self.app_gui, "index.html", dict_state)
+            self.app_gui.title = u"{dir_name_topfolder} - Test Status".format(
+                dir_name_topfolder=dict_state["dir_name_topfolder"])
+            self.app_gui.html = render_template(self.app_gui, self.tmpl_name_full, dict_state)
 
         self.last_state = dict_state
