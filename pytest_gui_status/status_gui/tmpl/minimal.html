@@ -23,11 +23,8 @@
         .statusdot
         {
             height: 100%;
-            {% if collect|length > 0 %}
-            width: {{100/(collect|length)}}%;
-            {% else %}
-            width: 0;
-            {% endif %}
+            
+            width: 100%;
             /*width: 1em;*/
             padding: 1px;
             float: left;
@@ -36,6 +33,13 @@
         {
             width: 100%;
             height: 100%;
+        }
+        .nostatusdot
+        {
+            padding: 1px;
+            width: 100%;
+            height: 100%;
+            background-color: yellow;
         }
         .fill-pass
         {
@@ -57,7 +61,8 @@
         }
         .last-test-dirname
         {
-            font-size: 0.75em;
+            font-size: 1em;
+            text-align: center;
         }
 
     </style>
@@ -69,13 +74,12 @@
 </head>
 <body>
     <div class="section-last-test">
-        <div class="state">
+        <!-- <div class="state">
             {{ state_desc }}
         </div>
         <div class="last-test-statusviz">
             {% for testname in collect %}
                 <div class="statusdot statusdot-{{loop.index0}}">
-                    <!-- {{ testname }} -->
                     {% if testname in pass %}
                         <div class="statusdot-fill fill-pass"></div>
                     {% elif testname in fail %}
@@ -86,9 +90,22 @@
         </div>
         <div class="last-test-timerelative">
             Got {{ last_updated_friendly }} ago
-        </div>
+        </div> -->
         <div class="last-test-dirname">
-            Folder : {{ dir_name_topfolder }}
+            {{ dir_name_topfolder }}
+        </div>
+        <div class="last-test-statusviz">
+            {% if state == "end" %}
+                    <div class="statusdot statusdot-{{loop.index0}}">
+                        {% if (fail|length) == 0 %}
+                            <div class="statusdot-fill fill-pass"></div>
+                        {% else %}
+                            <div class="statusdot-fill fill-fail"></div>
+                        {% endif %}
+                    </div>
+            {% else %}
+                <div class="nostatusdot"></div>
+            {% endif %}
         </div>
     </div>
 </body>

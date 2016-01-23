@@ -1,12 +1,12 @@
 Todo
 ------
 
+6. Allow config for template
 1. test template path available after install
 2. test option --show_status_gui available
 3. add details of --show_status_gui in addoption
 4. Release on pypi
 5. Add well-explained readme
-6. Allow config for template
 
 7. use logging.debug / log file for more prints
 8. Tests with setup/teardown/class when needed

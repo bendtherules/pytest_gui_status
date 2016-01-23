@@ -15,9 +15,9 @@ Pytest Status GUI
  Also, install `PySide` and `Redis` manually via apt-get or installers.
 
 #### How to use?
-`py.test --show_status_gui`
+`py.test --gui`
 
-**Recommended** : Use with [pytest-watch][ptw_gh_link] using `ptw -- --show_status_gui`
+**Recommended** : Use with [pytest-watch][ptw_gh_link] using `ptw -- --gui`
 
 pytest-watch re-runs py.test on any change to your code
 
@@ -49,11 +49,13 @@ The result is that you get some nifty **test status windows that update as you k
 ##### Template:
 ###### Minimal Window:
 
-//TODO
+Use `--gui_minimal` instead of `--gui` i.e. call using `py.test --gui_minimal`
+
+The minimal window is closer to what pytddmon does, but is somewhat different. It shows yellow while tests are running or being collected, and only full red or full green bar when tests complete.
 
 ###### Use your own template:
 
-//TODO
+// Not Supported now, maybe I can add if someone needs it.
 
 ##### Redis:
 ###### Custom Redis Command:
