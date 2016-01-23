@@ -71,7 +71,7 @@ class Helpers(object):
         Helpers.modify_last_updated(dir_name)
 
     @staticmethod
-    def start_gui(dir_name):
+    def start_gui(dir_name, extra_args=None):
         '''
         Init status_gui at start
         '''
@@ -88,6 +88,9 @@ class Helpers(object):
         if not (existing_gui_pid and psutil.pid_exists(existing_gui_pid)):
             norm_dir_name = os.path.normpath(dir_name)
             command_status_gui = command_status_gui_gen.format(norm_dir_name=norm_dir_name)
+            if extra_args:
+                command_status_gui = command_status_gui + " " + extra_args
+            # print("Starting gui as: {cmd_gui}".format(cmd_gui=command_status_gui))
             gui_popen_obj = subprocess.Popen(command_status_gui)
             gui_pid = gui_popen_obj.pid
             redis_db.set("{hash_a}_gui_pid".format(hash_a=hash_dir_name), gui_pid)
@@ -202,7 +205,8 @@ class PYTEST_DATA(object):
 
 
 def pytest_addoption(parser):
-    parser.addoption("--show_status_gui", dest="show_status_gui", action="store_true")
+    parser.addoption("--gui", dest="show_status_gui", action="store_true")
+    parser.addoption("--gui_minimal", dest="show_status_gui_minimal", action="store_true")
 
 
 def pytest_configure(config):
@@ -218,6 +222,8 @@ def pytest_sessionstart(session):
 
     if config.getoption("show_status_gui"):
         Helpers.start_gui(PYTEST_DATA.data["dir_name_start"])
+    elif config.getoption("show_status_gui_minimal"):
+        Helpers.start_gui(PYTEST_DATA.data["dir_name_start"], extra_args="--minimal")
 
 
 def pytest_collectstart(collector):

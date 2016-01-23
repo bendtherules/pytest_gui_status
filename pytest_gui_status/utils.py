@@ -14,7 +14,7 @@ command_redis_server = command_redis_server_gen.format(REDIS_PATH=REDIS_PATH,
                                                        REDIS_ARGS=REDIS_ARGS,
                                                        REDIS_PORT=REDIS_PORT)
 
-command_status_gui_gen = "pytest_gui_status \"{norm_dir_name}\""
+command_status_gui_gen = "pytest_gui_status --dir_name=\"{norm_dir_name}\""
 
 
 def s(input_):
