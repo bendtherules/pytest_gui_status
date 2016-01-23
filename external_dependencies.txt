@@ -1,3 +1,6 @@
 PySide
   - On linux, sudo apt-get install python-pyside
   - On Windows, install with installers from their website
+Redis
+  - On linux, sudo apt-get install redis
+  - On Windows, install with installers from MSOpenTech/redis github repo
