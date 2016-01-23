@@ -44,11 +44,6 @@ class Controller(htmlPy.Object):
         # self.app_gui.window.minimumWidth, self.app_gui.window.minimumHeight = (0, 0)
         self.app_gui.width, self.app_gui.height = self.dict_tmpl_size.get(self.app_gui.tmpl_name)
 
-        screen_geo = QApplication.desktop().availableGeometry()
-        screen_topright = screen_geo.topRight()
-        self.app_gui.x_pos = (screen_topright.x() - 20) - self.app_gui.width
-        self.app_gui.y_pos = (screen_topright.y() + 20)
-
     @htmlPy.Slot()
     def redraw(self):
         redis_db = redis.StrictRedis(host='localhost', port=REDIS_PORT, db=0)

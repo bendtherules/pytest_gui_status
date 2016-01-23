@@ -2,6 +2,7 @@ import htmlPy
 import os
 
 import PyQt4.QtCore as QtCore
+from PyQt4.QtGui import QApplication
 import argparse
 
 # Import back-end functionalities
@@ -31,6 +32,11 @@ def main():
     app.window.setWindowFlags(QtCore.Qt.WindowTitleHint)
     # app.window.setWindowFlags(app.window.windowFlags() & ~QtCore.Qt.WindowMaximizeButtonHint)
     app.window.setWindowFlags(app.window.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+
+    screen_geo = QApplication.desktop().availableGeometry()
+    screen_topright = screen_geo.topRight()
+    app.x_pos = (screen_topright.x() - 20) - app.width
+    app.y_pos = (screen_topright.y() + 20)
 
     # GUI configarg
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
