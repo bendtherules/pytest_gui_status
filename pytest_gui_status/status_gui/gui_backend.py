@@ -24,11 +24,6 @@ class Controller(htmlPy.Object):
         "minimal": "minimal.html",
     }
 
-    dict_tmpl_size = {
-        "default": (150, 80),
-        "minimal": (50, 50)
-    }
-
     def __init__(self, app_gui):
         super(Controller, self).__init__()
         self.i = 0
@@ -39,10 +34,6 @@ class Controller(htmlPy.Object):
         if self.tmpl_name_full is None:
             raise TypeError("template name must be valid, one of these: {allowed_tmpl_names}".format(
                 allowed_tmpl_names=(", ".join(self.dict_tmpl.keys()))))
-
-        # set correct width, height
-        # self.app_gui.window.minimumWidth, self.app_gui.window.minimumHeight = (0, 0)
-        self.app_gui.width, self.app_gui.height = self.dict_tmpl_size.get(self.app_gui.tmpl_name)
 
     @htmlPy.Slot()
     def redraw(self):

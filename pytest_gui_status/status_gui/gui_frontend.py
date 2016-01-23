@@ -8,6 +8,11 @@ import argparse
 # Import back-end functionalities
 from gui_backend import Controller
 
+dict_tmpl_size = {
+    "default": (150, 80),
+    "minimal": (50, 50)
+}
+
 
 def main():
     arg_parser = argparse.ArgumentParser()
@@ -32,7 +37,10 @@ def main():
     app.window.setWindowFlags(QtCore.Qt.WindowTitleHint)
     # app.window.setWindowFlags(app.window.windowFlags() & ~QtCore.Qt.WindowMaximizeButtonHint)
     app.window.setWindowFlags(app.window.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+    app.tmpl_name = app_tmpl
 
+    # set correct width, height
+    app.width, app.height = dict_tmpl_size.get(app.tmpl_name)
     screen_geo = QApplication.desktop().availableGeometry()
     screen_topright = screen_geo.topRight()
     app.x_pos = (screen_topright.x() - 20) - app.width
@@ -43,7 +51,6 @@ def main():
     app.static_path = os.path.join(BASE_DIR, "static/")
     app.template_path = os.path.join(BASE_DIR, "tmpl/")
     app.dir_name = dir_name
-    app.tmpl_name = app_tmpl
 
     # Register back-end functionalities
     # allow minimal tmpl with sys.arg
