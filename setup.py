@@ -16,7 +16,7 @@ package_data = {
 
 setup(
     name="pytest_gui_status",
-    version="0.0.3",
+    version="0.0.4",
     description="Show pytest status in gui",
     author="Abhas Bhattacharya",
     author_email="abhasbhattacharya2@gmail.com",
