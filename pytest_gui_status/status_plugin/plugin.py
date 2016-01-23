@@ -202,7 +202,7 @@ class PYTEST_DATA(object):
 
 
 def pytest_addoption(parser):
-    parser.addoption("--status_gui", dest="show_status_gui", action="store_true")
+    parser.addoption("--show_status_gui", dest="show_status_gui", action="store_true")
 
 
 def pytest_configure(config):
